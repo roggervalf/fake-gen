@@ -7,19 +7,19 @@
   "description": "Fake data generator",
   "version": "1.0.0",
   "keywords": [
-    "faker",
+    "fake-gen",
     "generator",
-    "fakerts"
+    "fake"
   ],
-  "name": "fakerts",
+  "name": "fake-gen",
   "repository": {
     "type": "git",
-    "url": "https://github.com/roggervalf/fakerts"
+    "url": "https://github.com/roggervalf/fake-gen"
   },
   "bugs": {
-    "url": "https://github.com/roggervalf/fakerts/issues"
+    "url": "https://github.com/roggervalf/fake-gen/issues"
   },
-  "homepage": "https://github.com/roggervalf/fakerts#readme",
+  "homepage": "https://github.com/roggervalf/fake-gen#readme",
   "scripts": {
     "pretest": "npm-run-all pretty:quick lint:staged",
     "prettier:format": "./node_modules/.bin/prettier **/*.{ts,js,json,yml} -l --ignore-path ./.eslintignore",
