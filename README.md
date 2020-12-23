@@ -4,7 +4,7 @@
 
 ## About
 
-Faker data generator
+Faker data generator, progressive refactor from [faker](https://www.npmjs.com/package/faker)
 
 ## Install
 
