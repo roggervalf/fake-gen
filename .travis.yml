@@ -27,15 +27,6 @@ script:
 after_success:
   - yarn semantic-release
 
-deploy:
-  provider: pages
-  local_dir: www/public
-  skip_cleanup: true
-  token: $GH_TOKEN
-  keep_history: true
-  on:
-    branch: master
-
 branches:
   except:
     - "/^v\\d+\\.\\d+\\.\\d+$/"
