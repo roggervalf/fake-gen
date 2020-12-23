@@ -108,7 +108,7 @@
       "@semantic-release/github",
       "@semantic-release/git"
     ],
-    "branch": "main"
+    "branch": "master"
   },
   "commitlint": {
     "extends": [
