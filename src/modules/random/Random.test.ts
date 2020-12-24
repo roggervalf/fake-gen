@@ -107,4 +107,14 @@ describe('Random', () => {
       expect(random.number(100)).toBe(54);
     });
   });
+
+  describe('uuid', () => {
+    it('should generate a valid UUID', () => {
+      const random = new Random();
+      const uuid = random.uuid();
+      const RFC4122 = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
+
+      expect(RFC4122.test(uuid)).toEqual(true);
+    });
+  });
 });

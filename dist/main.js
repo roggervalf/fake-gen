@@ -204,6 +204,7 @@ class MersenneTwister {
 }
 /* These real versions are due to Isaku Wada, 2002/01/09 added */
 
+const RFC4122_TEMPLATE = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
 class Random {
     constructor(seed) {
         this.mersenne = new MersenneTwister(seed);
@@ -224,6 +225,29 @@ class Random {
         const randomNumber = Math.floor(this.rand(finalMax / precision, min / precision));
         // Workaround problem in Float point arithmetics for e.g. 6681493 / 0.01
         return randomNumber / (1 / precision);
+    }
+    /**
+     * Generate a uuid.
+     *
+     * @method
+     * @since 1.1.0
+     * @returns {string} Returns the generated uuid.
+     * @example
+     * ```javascript
+     * random.uuid()
+     * // => 49e71c40-9b21-4371-9699-2def33f62e66
+     *
+     * random.uuid()
+     * // => da94f128-4247-48e3-bc73-d0cae46b5093
+     * ```
+    */
+    uuid() {
+        return RFC4122_TEMPLATE.replace(/[xy]/g, this.replacePlaceholders.bind(this));
+    }
+    replacePlaceholders(placeholder) {
+        const random = Math.floor(this.mersenne.randomReal2() * 16);
+        const value = placeholder === 'x' ? random : (random & 0x3) | 0x8;
+        return value.toString(16);
     }
     rand(max, min) {
         return Math.floor(this.mersenne.randomReal2() * (max - min) + min);
@@ -366,27 +390,11 @@ function Random (faker, seed) {
 
       return field === "key" ? key : object[key];
   }
-*/
-/**
- * uuid
- *
- * @method faker.random.uuid
- */
-/*  this.uuid = function () {
-      var RFC4122_TEMPLATE = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
-      var replacePlaceholders = function (placeholder) {
-          var random = faker.random.number({ min: 0, max: 15 });
-          var value = placeholder == 'x' ? random : (random &0x3 | 0x8);
-          return value.toString(16);
-      };
-      return RFC4122_TEMPLATE.replace(/[xy]/g, replacePlaceholders);
-  }
-*/
-/**
- * boolean
- *
- * @method faker.random.boolean
- */
+  /**
+   * boolean
+   *
+   * @method faker.random.boolean
+   */
 /*  this.boolean = function () {
       return !!faker.random.number(1)
   }

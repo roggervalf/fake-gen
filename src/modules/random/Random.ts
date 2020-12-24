@@ -6,9 +6,11 @@ interface NumberOptionsInterface {
   precision?: number;
 }
 
+const RFC4122_TEMPLATE = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
+
 export class Random {
   private readonly mersenne: MersenneTwister;
-  
+
   constructor(seed?: number | number[]) {
     this.mersenne = new MersenneTwister(seed);
   }
@@ -18,24 +20,58 @@ export class Random {
   }
 
   number(options: number | NumberOptionsInterface): number {
-    const defaultOptions={
+    const defaultOptions = {
       min: 0,
       max: 99999,
       precision: 1
-    }
+    };
 
-    const finalOptions=typeof options === "number"? {...defaultOptions,max:options}: {...defaultOptions,...options};
-    const {max, min, precision} = finalOptions;
+    const finalOptions =
+      typeof options === 'number'
+        ? { ...defaultOptions, max: options }
+        : { ...defaultOptions, ...options };
+    const { max, min, precision } = finalOptions;
     // Make the range inclusive of the max value
-    const finalMax=max>=0?max+precision:max;
-    
-    const randomNumber=Math.floor(this.rand(finalMax/precision, min/precision))
+    const finalMax = max >= 0 ? max + precision : max;
+
+    const randomNumber = Math.floor(
+      this.rand(finalMax / precision, min / precision)
+    );
     // Workaround problem in Float point arithmetics for e.g. 6681493 / 0.01
     return randomNumber / (1 / precision);
   }
 
+  /**
+   * Generate a uuid.
+   *
+   * @method
+   * @since 1.1.0
+   * @returns {string} Returns the generated uuid.
+   * @example
+   * ```javascript
+   * random.uuid()
+   * // => 49e71c40-9b21-4371-9699-2def33f62e66
+   *
+   * random.uuid()
+   * // => da94f128-4247-48e3-bc73-d0cae46b5093
+   * ```
+   */
+  uuid(this: Random): string {
+    return RFC4122_TEMPLATE.replace(
+      /[xy]/g,
+      this.replacePlaceholders.bind(this)
+    );
+  }
+
+  private replacePlaceholders(this: Random, placeholder: string): string {
+    const random = Math.floor(this.mersenne.randomReal2() * 16);
+
+    const value = placeholder === 'x' ? random : (random & 0x3) | 0x8;
+    return value.toString(16);
+  }
+
   private rand(this: Random, max: number, min: number): number {
-    return Math.floor(this.mersenne.randomReal2()*(max-min)+min);
+    return Math.floor(this.mersenne.randomReal2() * (max - min) + min);
   }
 }
 
@@ -55,12 +91,12 @@ function Random (faker, seed) {
     }
   }
 */
-  /**
-   * returns a single random number based on a max number or range
-   *
-   * @method faker.random.number
-   * @param {mixed} options {min, max, precision}
-   */
+/**
+ * returns a single random number based on a max number or range
+ *
+ * @method faker.random.number
+ * @param {mixed} options {min, max, precision}
+ */
 /*  this.number = function (options) {
 
     if (typeof options === "number") {
@@ -97,12 +133,12 @@ function Random (faker, seed) {
 
   }
 */
-  /**
-   * returns a single random floating-point number based on a max number or range
-   *
-   * @method faker.random.float
-   * @param {mixed} options
-   */
+/**
+ * returns a single random floating-point number based on a max number or range
+ *
+ * @method faker.random.float
+ * @param {mixed} options
+ */
 /*  this.float = function (options) {
       if (typeof options === "number") {
         options = {
@@ -119,13 +155,13 @@ function Random (faker, seed) {
       }
       return faker.random.number(opts);
   }
-*/  
-  /**
-   * takes an array and returns a random element of the array
-   *
-   * @method faker.random.arrayElement
-   * @param {array} array
-   */
+*/
+/**
+ * takes an array and returns a random element of the array
+ *
+ * @method faker.random.arrayElement
+ * @param {array} array
+ */
 /*
   this.arrayElement = function (array) {
       array = array || ["a", "b", "c"];
@@ -133,13 +169,13 @@ function Random (faker, seed) {
       return array[r];
   }
 */
-  /**
-   * takes an array and returns a subset with random elements of the array
-   *
-   * @method faker.random.arrayElements
-   * @param {array} array
-   * @param {number} count number of elements to pick
-   */
+/**
+ * takes an array and returns a subset with random elements of the array
+ *
+ * @method faker.random.arrayElements
+ * @param {array} array
+ * @param {number} count number of elements to pick
+ */
 /*
   this.arrayElements = function (array, count) {
       array = array || ["a", "b", "c"];
@@ -162,13 +198,13 @@ function Random (faker, seed) {
       return arrayCopy;
   }
 */
-  /**
-   * takes an object and returns the randomly key or value
-   *
-   * @method faker.random.objectElement
-   * @param {object} object
-   * @param {mixed} field
-   */
+/**
+ * takes an object and returns the randomly key or value
+ *
+ * @method faker.random.objectElement
+ * @param {object} object
+ * @param {mixed} field
+ */
 /*  this.objectElement = function (object, field) {
       object = object || { "foo": "bar", "too": "car" };
       var array = Object.keys(object);
@@ -176,22 +212,6 @@ function Random (faker, seed) {
 
       return field === "key" ? key : object[key];
   }
-*/
-  /**
-   * uuid
-   *
-   * @method faker.random.uuid
-   */
-/*  this.uuid = function () {
-      var RFC4122_TEMPLATE = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
-      var replacePlaceholders = function (placeholder) {
-          var random = faker.random.number({ min: 0, max: 15 });
-          var value = placeholder == 'x' ? random : (random &0x3 | 0x8);
-          return value.toString(16);
-      };
-      return RFC4122_TEMPLATE.replace(/[xy]/g, replacePlaceholders);
-  }
-*/
   /**
    * boolean
    *
@@ -201,13 +221,13 @@ function Random (faker, seed) {
       return !!faker.random.number(1)
   }
 */
-  // TODO: have ability to return specific type of word? As in: noun, adjective, verb, etc
-  /**
-   * word
-   *
-   * @method faker.random.word
-   * @param {string} type
-   */
+// TODO: have ability to return specific type of word? As in: noun, adjective, verb, etc
+/**
+ * word
+ *
+ * @method faker.random.word
+ * @param {string} type
+ */
 /*  this.word = function randomWord (type) {
 
     var wordMethods = [
@@ -249,12 +269,12 @@ function Random (faker, seed) {
     return faker.random.arrayElement(result.split(' '));
   }
 */
-  /**
-   * randomWords
-   *
-   * @method faker.random.words
-   * @param {number} count defaults to a random value between 1 and 3
-   */
+/**
+ * randomWords
+ *
+ * @method faker.random.words
+ * @param {number} count defaults to a random value between 1 and 3
+ */
 /*  this.words = function randomWords (count) {
     var words = [];
     if (typeof count === "undefined") {
@@ -266,30 +286,30 @@ function Random (faker, seed) {
     return words.join(' ');
   }
 */
-  /**
-   * locale
-   *
-   * @method faker.random.image
-   */
+/**
+ * locale
+ *
+ * @method faker.random.image
+ */
 /*  this.image = function randomImage () {
     return faker.image.image();
   }
 */
-  /**
-   * locale
-   *
-   * @method faker.random.locale
-   */
+/**
+ * locale
+ *
+ * @method faker.random.locale
+ */
 /*  this.locale = function randomLocale () {
     return faker.random.arrayElement(Object.keys(faker.locales));
   };
 */
-    /**
-   * alpha. returns lower/upper alpha characters based count and upcase options
-   *
-   * @method faker.random.alpha
-   * @param {mixed} options // defaults to { count: 1, upcase: false }
-   */
+/**
+ * alpha. returns lower/upper alpha characters based count and upcase options
+ *
+ * @method faker.random.alpha
+ * @param {mixed} options // defaults to { count: 1, upcase: false }
+ */
 /*  this.alpha = function alpha(options) {
     if (typeof options === "undefined") {
       options = {
@@ -315,12 +335,12 @@ function Random (faker, seed) {
     return options.upcase ? wholeString.toUpperCase() : wholeString;
   };
 */
-  /**
-   * alphaNumeric
-   *
-   * @method faker.random.alphaNumeric
-   * @param {number} count defaults to 1
-   */
+/**
+ * alphaNumeric
+ *
+ * @method faker.random.alphaNumeric
+ * @param {number} count defaults to 1
+ */
 /*  this.alphaNumeric = function alphaNumeric(count) {
     if (typeof count === "undefined") {
       count = 1;
@@ -334,12 +354,12 @@ function Random (faker, seed) {
     return wholeString;
   };
 */
-  /**
-   * hexaDecimal
-   *
-   * @method faker.random.hexaDecimal
-   * @param {number} count defaults to 1
-   */
+/**
+ * hexaDecimal
+ *
+ * @method faker.random.hexaDecimal
+ * @param {number} count defaults to 1
+ */
 /*  this.hexaDecimal = function hexaDecimal(count) {
     if (typeof count === "undefined") {
       count = 1;

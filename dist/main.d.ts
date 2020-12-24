@@ -8,6 +8,23 @@ declare class Random {
     constructor(seed?: number | number[]);
     initSeed(this: Random, seed: number): void;
     number(options: number | NumberOptionsInterface): number;
+    /**
+     * Generate a uuid.
+     *
+     * @method
+     * @since 1.1.0
+     * @returns {string} Returns the generated uuid.
+     * @example
+     * ```javascript
+     * random.uuid()
+     * // => 49e71c40-9b21-4371-9699-2def33f62e66
+     *
+     * random.uuid()
+     * // => da94f128-4247-48e3-bc73-d0cae46b5093
+     * ```
+    */
+    uuid(this: Random): string;
+    private replacePlaceholders;
     private rand;
 }/**
  *
@@ -44,16 +61,6 @@ declare class Random {
  * @method faker.random.objectElement
  * @param {object} object
  * @param {mixed} field
- */
-/**
- * uuid
- *
- * @method faker.random.uuid
- */
-/**
- * boolean
- *
- * @method faker.random.boolean
  */
 /**
  * word

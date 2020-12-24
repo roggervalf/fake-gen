@@ -18,6 +18,26 @@ Or
 yarn add fake-gen
 ```
 
+## Deno import
+
+```ts
+// @deno-types="https://raw.githubusercontent.com/roggervalf/fake_gen/master/dist/main.d.ts"
+import { Random } from 'https://raw.githubusercontent.com/roggervalf/fake_gen/master/dist/main.es.js';
+```
+
+or
+
+```ts
+// @deno-types="https://deno.land/x/fake_gen@master/dist/main.d.ts"
+import { Random } from 'https://deno.land/x/fake_gen@master/dist/main.es.js';
+```
+
+## Node import
+
+```js
+import { Random } from 'fake-gen';
+```
+
 **Example:**
 
 ```js
@@ -27,6 +47,9 @@ const random = new Random();
 
 console.log(random.number(100));
 // expects a random number from 0 to 100
+
+console.log(random.uuid());
+// expects a random uuid, i.e: 49e71c40-9b21-4371-9699-2def33f62e66
 
 random.initSeed(100);
 console.log(random.number(100));
