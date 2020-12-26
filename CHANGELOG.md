@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/roggervalf/fake-gen/compare/v1.1.0...v1.2.0) (2020-12-26)
+
+
+### Features
+
+* **random:** adding arrayElement, float and boolean methods ([2ccae0d](https://github.com/roggervalf/fake-gen/commit/2ccae0de22ee9c240e0c97eb4a556b55bf85ddaf))
+
 # [1.1.0](https://github.com/roggervalf/fake-gen/compare/v1.0.0...v1.1.0) (2020-12-24)
 
 
