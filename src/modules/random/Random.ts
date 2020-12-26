@@ -8,6 +8,15 @@ interface NumberOptionsInterface {
 
 const RFC4122_TEMPLATE = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
 
+/**
+ * Object returned by decomposeString function
+ *
+ * @typedef {Object} NumberOptions
+ * @property {number} min Minimum value of range
+ * @property {number} max Maximum value of range
+ * @property {number} precision Precision of accuracy
+ */
+
 export class Random {
   private readonly mersenne: MersenneTwister;
 
@@ -19,7 +28,46 @@ export class Random {
     this.mersenne.initSeed(seed);
   }
 
-  number(options: number | NumberOptionsInterface): number {
+  /**
+   * Takes an array and returns a random element of the array
+   *
+   * @method random.arrayElement
+   * @since 1.2.0
+   * @param {Array} array
+   * @returns {*} Returns a random array element.
+   * @example
+   * ```javascript
+   * random.arrayElement([1,2,3])
+   * // => 2
+   *
+   * random.arrayElement()
+   * // => 'a'
+   * ```
+   */
+  arrayElement<T>(array?: Array<T>): T | string {
+    const finalArray = array || ['a', 'b', 'c'];
+    const index = this.number({ max: finalArray.length - 1 });
+
+    return finalArray[index];
+  }
+
+  /**
+   * Returns a single random number based on a max number or range
+   *
+   * @method random.number
+   * @since 1.0.0
+   * @param {number|NumberOptions} options
+   * @returns {number} Returns the generated number.
+   * @example
+   * ```javascript
+   * random.number(100)
+   * // => 10
+   *
+   * random.number({min:10, max:20, precision:1})
+   * // => 15
+   * ```
+   */
+  number(options: number | NumberOptionsInterface = {}): number {
     const defaultOptions = {
       min: 0,
       max: 99999,
@@ -42,9 +90,57 @@ export class Random {
   }
 
   /**
+   * Returns a single random floating-point number based on a max number or range
+   *
+   * @method random.float
+   * @param {number|NumberOptions} options
+   * @since 1.2.0
+   * @returns {number} Returns the generated float.
+   * @example
+   * ```javascript
+   * random.float(100)
+   * // => 10
+   *
+   * random.float({min:10, max:20, precision:1})
+   * // => 15
+   * ```
+   */
+  float(options: number | NumberOptionsInterface = {}): number {
+    const defaultOptions = {
+      precision: 0.01
+    };
+
+    const finalOptions =
+      typeof options === 'number'
+        ? { ...defaultOptions, precision: options }
+        : { ...defaultOptions, ...options };
+
+    return this.number(finalOptions);
+  }
+
+  /**
+   * Generate a random boolean
+   *
+   * @method random.boolean
+   * @since 1.2.0
+   * @returns {boolean} Returns the generated boolean.
+   * @example
+   * ```javascript
+   * random.boolean()
+   * // => true
+   *
+   * random.boolean()
+   * // => false
+   * ```
+   */
+  boolean(this: Random): boolean {
+    return Boolean(this.number(1));
+  }
+
+  /**
    * Generate a uuid.
    *
-   * @method
+   * @method random.uuid
    * @since 1.1.0
    * @returns {string} Returns the generated uuid.
    * @example
@@ -92,84 +188,6 @@ function Random (faker, seed) {
   }
 */
 /**
- * returns a single random number based on a max number or range
- *
- * @method faker.random.number
- * @param {mixed} options {min, max, precision}
- */
-/*  this.number = function (options) {
-
-    if (typeof options === "number") {
-      options = {
-        max: options
-      };
-    }
-
-    options = options || {};
-
-    if (typeof options.min === "undefined") {
-      options.min = 0;
-    }
-
-    if (typeof options.max === "undefined") {
-      options.max = 99999;
-    }
-    if (typeof options.precision === "undefined") {
-      options.precision = 1;
-    }
-
-    // Make the range inclusive of the max value
-    var max = options.max;
-    if (max >= 0) {
-      max += options.precision;
-    }
-
-    var randomNumber = Math.floor(
-      mersenne.rand(max / options.precision, options.min / options.precision));
-    // Workaround problem in Float point arithmetics for e.g. 6681493 / 0.01
-    randomNumber = randomNumber / (1 / options.precision);
-
-    return randomNumber;
-
-  }
-*/
-/**
- * returns a single random floating-point number based on a max number or range
- *
- * @method faker.random.float
- * @param {mixed} options
- */
-/*  this.float = function (options) {
-      if (typeof options === "number") {
-        options = {
-          precision: options
-        };
-      }
-      options = options || {};
-      var opts = {};
-      for (var p in options) {
-        opts[p] = options[p];
-      }
-      if (typeof opts.precision === 'undefined') {
-        opts.precision = 0.01;
-      }
-      return faker.random.number(opts);
-  }
-*/
-/**
- * takes an array and returns a random element of the array
- *
- * @method faker.random.arrayElement
- * @param {array} array
- */
-/*
-  this.arrayElement = function (array) {
-      array = array || ["a", "b", "c"];
-      var r = faker.random.number({ max: array.length - 1 });
-      return array[r];
-  }
-*/
-/**
  * takes an array and returns a subset with random elements of the array
  *
  * @method faker.random.arrayElements
@@ -212,15 +230,6 @@ function Random (faker, seed) {
 
       return field === "key" ? key : object[key];
   }
-  /**
-   * boolean
-   *
-   * @method faker.random.boolean
-   */
-/*  this.boolean = function () {
-      return !!faker.random.number(1)
-  }
-*/
 // TODO: have ability to return specific type of word? As in: noun, adjective, verb, etc
 /**
  * word
