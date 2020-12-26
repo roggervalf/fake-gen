@@ -205,6 +205,14 @@ class MersenneTwister {
 /* These real versions are due to Isaku Wada, 2002/01/09 added */
 
 const RFC4122_TEMPLATE = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
+/**
+ * Object returned by decomposeString function
+ *
+ * @typedef {Object} NumberOptions
+ * @property {number} min Minimum value of range
+ * @property {number} max Maximum value of range
+ * @property {number} precision Precision of accuracy
+ */
 class Random {
     constructor(seed) {
         this.mersenne = new MersenneTwister(seed);
@@ -212,13 +220,51 @@ class Random {
     initSeed(seed) {
         this.mersenne.initSeed(seed);
     }
-    number(options) {
+    /**
+     * Takes an array and returns a random element of the array
+     *
+     * @method random.arrayElement
+     * @since 1.2.0
+     * @param {Array} array
+     * @returns {*} Returns a random array element.
+     * @example
+     * ```javascript
+     * random.arrayElement([1,2,3])
+     * // => 2
+     *
+     * random.arrayElement()
+     * // => 'a'
+     * ```
+     */
+    arrayElement(array) {
+        const finalArray = array || ["a", "b", "c"];
+        const index = this.number({ max: finalArray.length - 1 });
+        return finalArray[index];
+    }
+    /**
+     * Returns a single random number based on a max number or range
+     *
+     * @method random.number
+     * @since 1.0.0
+     * @param {number|NumberOptions} options
+     * @returns {number} Returns the generated number.
+     * @example
+     * ```javascript
+     * random.number(100)
+     * // => 10
+     *
+     * random.number({min:10, max:20, precision:1})
+     * // => 15
+     * ```
+     */
+    number(options = {}) {
         const defaultOptions = {
             min: 0,
             max: 99999,
             precision: 1
         };
-        const finalOptions = typeof options === "number" ? Object.assign(Object.assign({}, defaultOptions), { max: options }) : Object.assign(Object.assign({}, defaultOptions), options);
+        const finalOptions = typeof options === 'number'
+            ? Object.assign(Object.assign({}, defaultOptions), { max: options }) : Object.assign(Object.assign({}, defaultOptions), options);
         const { max, min, precision } = finalOptions;
         // Make the range inclusive of the max value
         const finalMax = max >= 0 ? max + precision : max;
@@ -227,9 +273,51 @@ class Random {
         return randomNumber / (1 / precision);
     }
     /**
+   * Returns a single random floating-point number based on a max number or range
+   *
+   * @method random.float
+   * @param {number|NumberOptions} options
+   * @since 1.2.0
+   * @returns {number} Returns the generated float.
+   * @example
+   * ```javascript
+   * random.float(100)
+   * // => 10
+   *
+   * random.float({min:10, max:20, precision:1})
+   * // => 15
+   * ```
+   */
+    float(options = {}) {
+        const defaultOptions = {
+            precision: 0.01
+        };
+        const finalOptions = typeof options === 'number'
+            ? Object.assign(Object.assign({}, defaultOptions), { precision: options }) : Object.assign(Object.assign({}, defaultOptions), options);
+        return this.number(finalOptions);
+    }
+    /**
+     * Generate a random boolean
+     *
+     * @method random.boolean
+     * @since 1.2.0
+     * @returns {boolean} Returns the generated boolean.
+     * @example
+     * ```javascript
+     * random.boolean()
+     * // => true
+     *
+     * random.boolean()
+     * // => false
+     * ```
+     */
+    boolean() {
+        return !!this.number(1);
+    }
+    /**
      * Generate a uuid.
      *
-     * @method
+     * @method random.uuid
      * @since 1.1.0
      * @returns {string} Returns the generated uuid.
      * @example
@@ -240,7 +328,7 @@ class Random {
      * random.uuid()
      * // => da94f128-4247-48e3-bc73-d0cae46b5093
      * ```
-    */
+     */
     uuid() {
         return RFC4122_TEMPLATE.replace(/[xy]/g, this.replacePlaceholders.bind(this));
     }
@@ -267,84 +355,6 @@ function Random (faker, seed) {
     else {
       mersenne.seed(seed);
     }
-  }
-*/
-/**
- * returns a single random number based on a max number or range
- *
- * @method faker.random.number
- * @param {mixed} options {min, max, precision}
- */
-/*  this.number = function (options) {
-
-    if (typeof options === "number") {
-      options = {
-        max: options
-      };
-    }
-
-    options = options || {};
-
-    if (typeof options.min === "undefined") {
-      options.min = 0;
-    }
-
-    if (typeof options.max === "undefined") {
-      options.max = 99999;
-    }
-    if (typeof options.precision === "undefined") {
-      options.precision = 1;
-    }
-
-    // Make the range inclusive of the max value
-    var max = options.max;
-    if (max >= 0) {
-      max += options.precision;
-    }
-
-    var randomNumber = Math.floor(
-      mersenne.rand(max / options.precision, options.min / options.precision));
-    // Workaround problem in Float point arithmetics for e.g. 6681493 / 0.01
-    randomNumber = randomNumber / (1 / options.precision);
-
-    return randomNumber;
-
-  }
-*/
-/**
- * returns a single random floating-point number based on a max number or range
- *
- * @method faker.random.float
- * @param {mixed} options
- */
-/*  this.float = function (options) {
-      if (typeof options === "number") {
-        options = {
-          precision: options
-        };
-      }
-      options = options || {};
-      var opts = {};
-      for (var p in options) {
-        opts[p] = options[p];
-      }
-      if (typeof opts.precision === 'undefined') {
-        opts.precision = 0.01;
-      }
-      return faker.random.number(opts);
-  }
-*/
-/**
- * takes an array and returns a random element of the array
- *
- * @method faker.random.arrayElement
- * @param {array} array
- */
-/*
-  this.arrayElement = function (array) {
-      array = array || ["a", "b", "c"];
-      var r = faker.random.number({ max: array.length - 1 });
-      return array[r];
   }
 */
 /**
@@ -390,15 +400,6 @@ function Random (faker, seed) {
 
       return field === "key" ? key : object[key];
   }
-  /**
-   * boolean
-   *
-   * @method faker.random.boolean
-   */
-/*  this.boolean = function () {
-      return !!faker.random.number(1)
-  }
-*/
 // TODO: have ability to return specific type of word? As in: noun, adjective, verb, etc
 /**
  * word
@@ -483,11 +484,11 @@ function Random (faker, seed) {
   };
 */
 /**
-* alpha. returns lower/upper alpha characters based count and upcase options
-*
-* @method faker.random.alpha
-* @param {mixed} options // defaults to { count: 1, upcase: false }
-*/
+ * alpha. returns lower/upper alpha characters based count and upcase options
+ *
+ * @method faker.random.alpha
+ * @param {mixed} options // defaults to { count: 1, upcase: false }
+ */
 /*  this.alpha = function alpha(options) {
     if (typeof options === "undefined") {
       options = {
