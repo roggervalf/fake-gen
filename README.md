@@ -56,6 +56,15 @@ console.log(random.number(100));
 // expects a 54
 ```
 
+## Methods
+
+- random
+  - number
+  - float
+  - arrayElement
+  - uuid
+  - boolean
+
 ## Article
 
 [How to build a Deno module](https://medium.com/@rogger.valverde/how-to-build-a-deno-module-dc383eee8edb)
