@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/roggervalf/fake-gen/compare/v1.2.0...v1.3.0) (2020-12-27)
+
+
+### Features
+
+* **internet:** adding new module with avatar method ([e20eca2](https://github.com/roggervalf/fake-gen/commit/e20eca25a9bb24c08c489fac488bad85fa43e025))
+
 # [1.2.0](https://github.com/roggervalf/fake-gen/compare/v1.1.0...v1.2.0) (2020-12-26)
 
 
