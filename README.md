@@ -58,6 +58,8 @@ console.log(random.number(100));
 
 ## Methods
 
+- internet
+  - avatar
 - random
   - number
   - float

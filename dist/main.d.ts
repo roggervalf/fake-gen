@@ -50,21 +50,21 @@ declare class Random {
      */
     number(options?: number | NumberOptionsInterface): number;
     /**
-   * Returns a single random floating-point number based on a max number or range
-   *
-   * @method random.float
-   * @param {number|NumberOptions} options
-   * @since 1.2.0
-   * @returns {number} Returns the generated float.
-   * @example
-   * ```javascript
-   * random.float(100)
-   * // => 10
-   *
-   * random.float({min:10, max:20, precision:1})
-   * // => 15
-   * ```
-   */
+     * Returns a single random floating-point number based on a max number or range
+     *
+     * @method random.float
+     * @param {number|NumberOptions} options
+     * @since 1.2.0
+     * @returns {number} Returns the generated float.
+     * @example
+     * ```javascript
+     * random.float(100)
+     * // => 10
+     *
+     * random.float({min:10, max:20, precision:1})
+     * // => 15
+     * ```
+     */
     float(options?: number | NumberOptionsInterface): number;
     /**
      * Generate a random boolean
