@@ -237,7 +237,7 @@ class Random {
      * ```
      */
     arrayElement(array) {
-        const finalArray = array || ["a", "b", "c"];
+        const finalArray = array || ['a', 'b', 'c'];
         const index = this.number({ max: finalArray.length - 1 });
         return finalArray[index];
     }
@@ -273,21 +273,21 @@ class Random {
         return randomNumber / (1 / precision);
     }
     /**
-   * Returns a single random floating-point number based on a max number or range
-   *
-   * @method random.float
-   * @param {number|NumberOptions} options
-   * @since 1.2.0
-   * @returns {number} Returns the generated float.
-   * @example
-   * ```javascript
-   * random.float(100)
-   * // => 10
-   *
-   * random.float({min:10, max:20, precision:1})
-   * // => 15
-   * ```
-   */
+     * Returns a single random floating-point number based on a max number or range
+     *
+     * @method random.float
+     * @param {number|NumberOptions} options
+     * @since 1.2.0
+     * @returns {number} Returns the generated float.
+     * @example
+     * ```javascript
+     * random.float(100)
+     * // => 10
+     *
+     * random.float({min:10, max:20, precision:1})
+     * // => 15
+     * ```
+     */
     float(options = {}) {
         const defaultOptions = {
             precision: 0.01
@@ -312,7 +312,7 @@ class Random {
      * ```
      */
     boolean() {
-        return !!this.number(1);
+        return Boolean(this.number(1));
     }
     /**
      * Generate a uuid.
