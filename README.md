@@ -22,26 +22,32 @@ yarn add fake-gen
 
 ```ts
 // @deno-types="https://raw.githubusercontent.com/roggervalf/fake_gen/master/dist/main.d.ts"
-import { Random } from 'https://raw.githubusercontent.com/roggervalf/fake_gen/master/dist/main.es.js';
+import {
+  Internet,
+  Random
+} from 'https://raw.githubusercontent.com/roggervalf/fake_gen/master/dist/main.es.js';
 ```
 
 or
 
 ```ts
 // @deno-types="https://deno.land/x/fake_gen@master/dist/main.d.ts"
-import { Random } from 'https://deno.land/x/fake_gen@master/dist/main.es.js';
+import {
+  Internet,
+  Random
+} from 'https://deno.land/x/fake_gen@master/dist/main.es.js';
 ```
 
 ## Node import
 
 ```js
-import { Random } from 'fake-gen';
+import { Internet, Random } from 'fake-gen';
 ```
 
 **Example:**
 
 ```js
-const { Random } = require('fake-gen');
+const { Internet, Random } = require('fake-gen');
 
 const random = new Random();
 
@@ -54,18 +60,31 @@ console.log(random.uuid());
 random.initSeed(100);
 console.log(random.number(100));
 // expects a 54
+
+const internet = new Internet();
+
+console.log(internet.avatar());
+// expects a random avatar uri, i.e: https://randomuser.me/api/portraits/women/54.jpg
+
+console.log(internet.ip());
+// expects a random ip, i.e: 200.105.198.100
+
+console.log(internet.protocol());
+// expects a random ip, i.e: https
 ```
 
 ## Methods
 
 - internet
   - avatar
+  - ip
+  - protocol
 - random
-  - number
-  - float
   - arrayElement
-  - uuid
   - boolean
+  - float
+  - number
+  - uuid
 
 ## Article
 
