@@ -1,3 +1,54 @@
+declare class Internet {
+    private readonly random;
+    constructor(seed?: number | number[]);
+    initSeed(this: Internet, seed: number): void;
+    /**
+     * Generates a random avatar image uri
+     * @method internet.avatar
+     * @since 1.3.0
+     * @returns {string} Returns a random image uri.
+     * @example
+     * ```javascript
+     * internet.avatar()
+     * // => 'https://randomuser.me/api/portraits/women/87.jpg',
+     *
+     * internet.avatar()
+     * // => 'https://randomuser.me/api/portraits/women/15.jpg',
+     * ```
+     */
+    avatar(): string;
+    /**
+     * Generates a random ip
+     * @method internet.ip
+     * @since 1.4.0
+     * @returns {string} Returns a random ip.
+     * @example
+     * ```javascript
+     * internet.ip()
+     * // => '255.255.255.255',
+     *
+     * internet.ip()
+     * // => '0.0.0.0',
+     * ```
+     */
+    ip(): string;
+    /**
+     * Returns a random protocol
+     * @method internet.protocol
+     * @since 1.4.0
+     * @returns {string} Returns a random protocol [http, https].
+     * @example
+     * ```javascript
+     * internet.protocol()
+     * // => 'https',
+     *
+     * internet.protocol()
+     * // => 'http',
+     * ```
+     */
+    protocol(): string;
+}
+
 interface NumberOptionsInterface {
     min?: number;
     max?: number;
@@ -153,4 +204,4 @@ declare class Random {
  * @param {number} count defaults to 1
  */
 
-export { Random };
+export { Internet, Random };
