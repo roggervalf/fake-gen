@@ -1,5 +1,5 @@
 import { Random } from '../random/Random';
-import { avatarUris } from './definitions';
+import { avatarUris, protocols } from './definitions';
 
 export class Internet {
   private readonly random: Random;
@@ -26,7 +26,25 @@ export class Internet {
    * // => 'https://randomuser.me/api/portraits/women/15.jpg',
    * ```
    */
-  avatar() {
+  avatar(): string {
     return this.random.arrayElement(avatarUris);
+  }
+
+  /**
+   * Returns a random protocol
+   * @method internet.protocol
+   * @since 1.4.0
+   * @returns {string} Returns a random protocol [http, https].
+   * @example
+   * ```javascript
+   * internet.protocol()
+   * // => 'https',
+   *
+   * internet.protocol()
+   * // => 'http',
+   * ```
+   */
+  protocol(): string {
+    return this.random.arrayElement(protocols);
   }
 }

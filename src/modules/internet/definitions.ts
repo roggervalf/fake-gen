@@ -202,4 +202,6 @@ const avatarUris = [
   'https://randomuser.me/api/portraits/women/99.jpg'
 ];
 
-export { avatarUris };
+const protocols = ['http', 'https'];
+
+export { avatarUris, protocols };
