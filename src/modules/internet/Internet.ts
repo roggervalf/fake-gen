@@ -31,6 +31,24 @@ export class Internet {
   }
 
   /**
+   * Generates a random ip
+   * @method internet.ip
+   * @since 1.4.0
+   * @returns {string} Returns a random ip.
+   * @example
+   * ```javascript
+   * internet.ip()
+   * // => '255.255.255.255',
+   *
+   * internet.ip()
+   * // => '0.0.0.0',
+   * ```
+   */
+  ip(): string {
+    return [0, 0, 0, 0].map(() => this.random.number(255).toFixed(0)).join('.');
+  }
+
+  /**
    * Returns a random protocol
    * @method internet.protocol
    * @since 1.4.0
