@@ -1,3 +1,11 @@
+# [1.4.0](https://github.com/roggervalf/fake-gen/compare/v1.3.0...v1.4.0) (2020-12-28)
+
+
+### Features
+
+* **internet:** adding ip method ([8739d9c](https://github.com/roggervalf/fake-gen/commit/8739d9cbdde3e35f1dcf5e454fb39cd78fa8715c))
+* **internet:** adding protocol method ([b814cdd](https://github.com/roggervalf/fake-gen/commit/b814cdd5bdf1092941f5c3fdb0a6d202b8ab4a07))
+
 # [1.3.0](https://github.com/roggervalf/fake-gen/compare/v1.2.0...v1.3.0) (2020-12-27)
 
 
