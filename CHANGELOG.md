@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/roggervalf/fake-gen/compare/v1.4.0...v1.5.0) (2020-12-29)
+
+
+### Features
+
+* **random:** adding alpha method ([6644cb8](https://github.com/roggervalf/fake-gen/commit/6644cb8345e452bf03607e31c90105899259905d))
+
 # [1.4.0](https://github.com/roggervalf/fake-gen/compare/v1.3.0...v1.4.0) (2020-12-28)
 
 
