@@ -214,12 +214,6 @@ declare class Random {
  * @method faker.random.locale
  */
 /**
- * alpha. returns lower/upper alpha characters based count and upcase options
- *
- * @method faker.random.alpha
- * @param {mixed} options // defaults to { count: 1, upcase: false }
- */
-/**
  * alphaNumeric
  *
  * @method faker.random.alphaNumeric

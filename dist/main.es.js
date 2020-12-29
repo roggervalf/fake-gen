@@ -200,10 +200,62 @@ class MersenneTwister {
 }
 /* These real versions are due to Isaku Wada, 2002/01/09 added */
 
-const lowercaseLetters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j",
-    "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
-const uppercaseLetters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
-    "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+const lowercaseLetters = [
+    'a',
+    'b',
+    'c',
+    'd',
+    'e',
+    'f',
+    'g',
+    'h',
+    'i',
+    'j',
+    'k',
+    'l',
+    'm',
+    'n',
+    'o',
+    'p',
+    'q',
+    'r',
+    's',
+    't',
+    'u',
+    'v',
+    'w',
+    'x',
+    'y',
+    'z'
+];
+const uppercaseLetters = [
+    'A',
+    'B',
+    'C',
+    'D',
+    'E',
+    'F',
+    'G',
+    'H',
+    'I',
+    'J',
+    'K',
+    'L',
+    'M',
+    'N',
+    'O',
+    'P',
+    'Q',
+    'R',
+    'S',
+    'T',
+    'U',
+    'V',
+    'W',
+    'X',
+    'Y',
+    'Z'
+];
 const RFC4122_TEMPLATE = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
 
 /**
@@ -517,37 +569,6 @@ function Random (faker, seed) {
  */
 /*  this.locale = function randomLocale () {
     return faker.random.arrayElement(Object.keys(faker.locales));
-  };
-*/
-/**
- * alpha. returns lower/upper alpha characters based count and upcase options
- *
- * @method faker.random.alpha
- * @param {mixed} options // defaults to { count: 1, upcase: false }
- */
-/*  this.alpha = function alpha(options) {
-    if (typeof options === "undefined") {
-      options = {
-        count: 1
-      }
-    } else if (typeof options === "number") {
-      options = {
-        count: options,
-      }
-    } else if (typeof options.count === "undefined") {
-      options.count = 1
-    }
-
-    if (typeof options.upcase === "undefined") {
-      options.upcase = false;
-    }
-
-    var wholeString = "";
-    for(var i = 0; i < options.count; i++) {
-      wholeString += faker.random.arrayElement(["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]);
-    }
-
-    return options.upcase ? wholeString.toUpperCase() : wholeString;
   };
 */
 /**

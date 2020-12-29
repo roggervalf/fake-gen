@@ -51,6 +51,9 @@ const { Internet, Random } = require('fake-gen');
 
 const random = new Random();
 
+console.log(random.alpha());
+// expects a random character from 'a' to 'z'
+
 console.log(random.number(100));
 // expects a random number from 0 to 100
 
@@ -80,6 +83,7 @@ console.log(internet.protocol());
   - ip
   - protocol
 - random
+  - alpha
   - arrayElement
   - boolean
   - float
