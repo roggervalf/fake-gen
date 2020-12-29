@@ -1,4 +1,9 @@
 import { MersenneTwister } from '../../utils/mersenneTwister';
+import {
+  lowercaseLetters,
+  RFC4122_TEMPLATE,
+  uppercaseLetters
+} from './constants';
 
 interface NumberOptionsInterface {
   min?: number;
@@ -6,15 +11,26 @@ interface NumberOptionsInterface {
   precision?: number;
 }
 
-const RFC4122_TEMPLATE = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
+interface AlphaOptionsInterface {
+  count?: number;
+  uppercase?: boolean;
+}
 
 /**
- * Object returned by decomposeString function
+ * Object with options
  *
  * @typedef {Object} NumberOptions
  * @property {number} min Minimum value of range
  * @property {number} max Maximum value of range
  * @property {number} precision Precision of accuracy
+ */
+
+/**
+ * Object with options
+ *
+ * @typedef {Object} AlphaOptions
+ * @property {number} count Quantity of values
+ * @property {boolean}  uppercase flag to use uppercase letters
  */
 
 export class Random {
@@ -26,6 +42,42 @@ export class Random {
 
   initSeed(this: Random, seed: number): void {
     this.mersenne.initSeed(seed);
+  }
+
+  /**
+   * Returns lower or upper alpha characters based count and uppercase options
+   *
+   * @method random.alpha
+   * @since 1.5.0
+   * @param {number|AlphaOptions} options
+   * @returns {string} Returns the generated string with alpha characters.
+   * @example
+   * ```javascript
+   * random.alpha()
+   * // => 'b'
+   *
+   * random.alpha({count:2,uppercase:true})
+   * // => 'CD'
+   * ```
+   */
+  alpha(options: number | AlphaOptionsInterface = {}): string {
+    const defaultOptions = {
+      count: 1,
+      uppercase: false
+    };
+
+    const finalOptions =
+      typeof options === 'number'
+        ? { ...defaultOptions, count: options }
+        : { ...defaultOptions, ...options };
+    const { count, uppercase } = finalOptions;
+    const lettersArray = uppercase ? uppercaseLetters : lowercaseLetters;
+
+    const letters = Array.from(Array(count).keys()).map(() =>
+      this.arrayElement(lettersArray)
+    );
+
+    return letters.join('');
   }
 
   /**

@@ -200,14 +200,26 @@ class MersenneTwister {
 }
 /* These real versions are due to Isaku Wada, 2002/01/09 added */
 
+const lowercaseLetters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j",
+    "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+const uppercaseLetters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
+    "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 const RFC4122_TEMPLATE = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
+
 /**
- * Object returned by decomposeString function
+ * Object with options
  *
  * @typedef {Object} NumberOptions
  * @property {number} min Minimum value of range
  * @property {number} max Maximum value of range
  * @property {number} precision Precision of accuracy
+ */
+/**
+ * Object with options
+ *
+ * @typedef {Object} AlphaOptions
+ * @property {number} count Quantity of values
+ * @property {boolean}  uppercase flag to use uppercase letters
  */
 class Random {
     constructor(seed) {
@@ -215,6 +227,34 @@ class Random {
     }
     initSeed(seed) {
         this.mersenne.initSeed(seed);
+    }
+    /**
+     * Returns lower or upper alpha characters based count and uppercase options
+     *
+     * @method random.alpha
+     * @since 1.5.0
+     * @param {number|AlphaOptions} options
+     * @returns {string} Returns the generated string with alpha characters.
+     * @example
+     * ```javascript
+     * random.alpha()
+     * // => 'b'
+     *
+     * random.alpha({count:2,uppercase:true})
+     * // => 'CD'
+     * ```
+     */
+    alpha(options = {}) {
+        const defaultOptions = {
+            count: 1,
+            uppercase: false
+        };
+        const finalOptions = typeof options === 'number'
+            ? Object.assign(Object.assign({}, defaultOptions), { count: options }) : Object.assign(Object.assign({}, defaultOptions), options);
+        const { count, uppercase } = finalOptions;
+        const lettersArray = uppercase ? uppercaseLetters : lowercaseLetters;
+        const letters = Array.from(Array(count).keys()).map(() => this.arrayElement(lettersArray));
+        return letters.join('');
     }
     /**
      * Takes an array and returns a random element of the array

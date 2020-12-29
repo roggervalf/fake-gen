@@ -1,5 +1,5 @@
 import { Random } from '../random/Random';
-import { avatarUris, protocols } from './definitions';
+import { avatarUris, protocols } from './constants';
 
 export class Internet {
   private readonly random: Random;

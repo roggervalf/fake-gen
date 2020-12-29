@@ -11,6 +11,46 @@ describe('Random', () => {
     });
   });
 
+  describe('alpha', () => {
+    it('returns single lowercase letter when no options are provided', () => {
+      const random = new Random();
+      const letter = random.alpha();
+
+      expect(letter.length).toBe(1);
+      expect(letter).toMatch(/[a-z]/);
+    });
+
+    it('returns single uppercase letter when uppercase option is true', () => {
+      const random = new Random();
+      const letter = random.alpha({ uppercase: true });
+
+      expect(letter.length).toBe(1);
+      expect(letter).toMatch(/[A-Z]/);
+    });
+
+    describe('when count options is provided', () => {
+      describe('when count is passed as number', () => {
+        it('generates many random letters', () => {
+          const random = new Random();
+          const letters = random.alpha(5);
+
+          expect(letters.length).toBe(5);
+          expect(letters).toMatch(/[a-z]{5}/);
+        });
+      });
+
+      describe('when count is passed as part of options object', () => {
+        it('generates many random letters', () => {
+          const random = new Random();
+          const letters = random.alpha({ count: 5 });
+
+          expect(letters.length).toBe(5);
+          expect(letters).toMatch(/[a-z]{5}/);
+        });
+      });
+    });
+  });
+
   describe('arrayElement', () => {
     it('returns a random element in the default array', () => {
       const random = new Random();

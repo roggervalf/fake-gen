@@ -1,5 +1,5 @@
 import { Internet } from './Internet';
-import { avatarUris, protocols } from './definitions';
+import { avatarUris, protocols } from './constants';
 
 describe('Internet', () => {
   describe('when creating a Internet instance', () => {
