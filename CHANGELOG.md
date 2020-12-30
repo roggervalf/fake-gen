@@ -1,3 +1,11 @@
+# [1.6.0](https://github.com/roggervalf/fake-gen/compare/v1.5.0...v1.6.0) (2020-12-30)
+
+
+### Features
+
+* **random:** adding alphanumeric method ([5639f7b](https://github.com/roggervalf/fake-gen/commit/5639f7b9f6f45d5effc0fabb6dead8a85cf9cbf4))
+* **random:** adding hexadecimal method ([bfca168](https://github.com/roggervalf/fake-gen/commit/bfca168e0d409ff62d3d5e7f5d686030dbe64594))
+
 # [1.5.0](https://github.com/roggervalf/fake-gen/compare/v1.4.0...v1.5.0) (2020-12-29)
 
 
