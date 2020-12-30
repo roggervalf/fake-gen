@@ -1,10 +1,7 @@
+const lowercaseHexadecimalLetters = ['a', 'b', 'c', 'd', 'e', 'f'];
+
 const lowercaseLetters = [
-  'a',
-  'b',
-  'c',
-  'd',
-  'e',
-  'f',
+  ...lowercaseHexadecimalLetters,
   'g',
   'h',
   'i',
@@ -27,13 +24,10 @@ const lowercaseLetters = [
   'z'
 ];
 
+const uppercaseHexadecimalLetters = ['A', 'B', 'C', 'D', 'E', 'F'];
+
 const uppercaseLetters = [
-  'A',
-  'B',
-  'C',
-  'D',
-  'E',
-  'F',
+  ...uppercaseHexadecimalLetters,
   'G',
   'H',
   'I',
@@ -60,14 +54,20 @@ const numberStrings = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
 const lowercaseAlphaNumeric = [...numberStrings, ...lowercaseLetters];
 
+const lowercaseHexadecimal = [...numberStrings, ...lowercaseHexadecimalLetters];
+
 const uppercaseAlphaNumeric = [...numberStrings, ...uppercaseLetters];
+
+const uppercaseHexadecimal = [...numberStrings, ...uppercaseHexadecimalLetters];
 
 const RFC4122_TEMPLATE = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
 
 export {
   lowercaseAlphaNumeric,
+  lowercaseHexadecimal,
   lowercaseLetters,
   RFC4122_TEMPLATE,
   uppercaseAlphaNumeric,
+  uppercaseHexadecimal,
   uppercaseLetters
 };

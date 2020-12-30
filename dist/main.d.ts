@@ -58,6 +58,9 @@ interface AlphaOptionsInterface {
     count?: number;
     uppercase?: boolean;
 }
+declare type HexadecimalOptionsType = AlphaOptionsInterface & ({
+    prefix?: boolean;
+});
 /**
  * Object with options
  *
@@ -70,8 +73,16 @@ interface AlphaOptionsInterface {
  * Object with options
  *
  * @typedef {Object} AlphaOptions
- * @property {number} count Quantity of values
- * @property {boolean}  uppercase flag to use uppercase letters
+ * @property {number} count Quantity of values, default to 1
+ * @property {boolean} uppercase flag to use uppercase letters
+ */
+/**
+ * Object with options
+ *
+ * @typedef {Object} HexadecimalOptions
+ * @property {number} count Quantity of values. default to 1
+ * @property {boolean} uppercase flag to use uppercase letters
+ * @property {boolean} prefix flag to add 0x prefix
  */
 declare class Random {
     private readonly mersenne;
@@ -129,22 +140,21 @@ declare class Random {
      */
     arrayElement<T>(this: Random, array?: Array<T>): T | string;
     /**
-     * Returns a single random number based on a max number or range
+     * Generate a random boolean
      *
-     * @method random.number
-     * @since 1.0.0
-     * @param {number|NumberOptions} options
-     * @returns {number} Returns the generated number.
+     * @method random.boolean
+     * @since 1.2.0
+     * @returns {boolean} Returns the generated boolean.
      * @example
      * ```javascript
-     * random.number(100)
-     * // => 10
+     * random.boolean()
+     * // => true
      *
-     * random.number({min:10, max:20, precision:1})
-     * // => 15
+     * random.boolean()
+     * // => false
      * ```
      */
-    number(this: Random, options?: number | NumberOptionsInterface): number;
+    boolean(this: Random): boolean;
     /**
      * Returns a single random floating-point number based on a max number or range
      *
@@ -163,21 +173,40 @@ declare class Random {
      */
     float(this: Random, options?: number | NumberOptionsInterface): number;
     /**
-     * Generate a random boolean
      *
-     * @method random.boolean
-     * @since 1.2.0
-     * @returns {boolean} Returns the generated boolean.
+     * Returns lower or upper hexadecimal number string based on count, uppercase and prefix options
+     *
+     * @method random.hexadecimal
+     * @since 1.7.0
+     * @param {number|HexadecimalOptions} options
+     * @returns {string} Returns the generated string with hexadecimal characters.
      * @example
      * ```javascript
-     * random.boolean()
-     * // => true
+     * random.hexadecimal()
+     * // => '0xf'
      *
-     * random.boolean()
-     * // => false
+     * random.hexadecimal({count:2, uppercase:true, prefix: false})
+     * // => '1A'
      * ```
      */
-    boolean(this: Random): boolean;
+    hexadecimal(this: Random, options?: number | HexadecimalOptionsType): string;
+    /**
+     * Returns a single random number based on a max number or range
+     *
+     * @method random.number
+     * @since 1.0.0
+     * @param {number|NumberOptions} options
+     * @returns {number} Returns the generated number.
+     * @example
+     * ```javascript
+     * random.number(100)
+     * // => 10
+     *
+     * random.number({min:10, max:20, precision:1})
+     * // => 15
+     * ```
+     */
+    number(this: Random, options?: number | NumberOptionsInterface): number;
     /**
      * Generate a uuid.
      *
@@ -229,12 +258,6 @@ declare class Random {
  * locale
  *
  * @method faker.random.locale
- */
-/**
- * hexaDecimal
- *
- * @method faker.random.hexaDecimal
- * @param {number} count defaults to 1
  */
 
 export { Internet, Random };

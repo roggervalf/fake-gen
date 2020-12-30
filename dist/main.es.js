@@ -200,13 +200,16 @@ class MersenneTwister {
 }
 /* These real versions are due to Isaku Wada, 2002/01/09 added */
 
-const lowercaseLetters = [
+const lowercaseHexadecimalLetters = [
     'a',
     'b',
     'c',
     'd',
     'e',
-    'f',
+    'f'
+];
+const lowercaseLetters = [
+    ...lowercaseHexadecimalLetters,
     'g',
     'h',
     'i',
@@ -228,13 +231,16 @@ const lowercaseLetters = [
     'y',
     'z'
 ];
-const uppercaseLetters = [
+const uppercaseHexadecimalLetters = [
     'A',
     'B',
     'C',
     'D',
     'E',
-    'F',
+    'F'
+];
+const uppercaseLetters = [
+    ...uppercaseHexadecimalLetters,
     'G',
     'H',
     'I',
@@ -256,20 +262,11 @@ const uppercaseLetters = [
     'Y',
     'Z'
 ];
-const numberStrings = [
-    '0',
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-    '8',
-    '9'
-];
+const numberStrings = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 const lowercaseAlphaNumeric = [...numberStrings, ...lowercaseLetters];
+const lowercaseHexadecimal = [...numberStrings, ...lowercaseHexadecimalLetters];
 const uppercaseAlphaNumeric = [...numberStrings, ...uppercaseLetters];
+const uppercaseHexadecimal = [...numberStrings, ...uppercaseHexadecimalLetters];
 const RFC4122_TEMPLATE = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
 
 /**
@@ -284,8 +281,16 @@ const RFC4122_TEMPLATE = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
  * Object with options
  *
  * @typedef {Object} AlphaOptions
- * @property {number} count Quantity of values
- * @property {boolean}  uppercase flag to use uppercase letters
+ * @property {number} count Quantity of values, default to 1
+ * @property {boolean} uppercase flag to use uppercase letters
+ */
+/**
+ * Object with options
+ *
+ * @typedef {Object} HexadecimalOptions
+ * @property {number} count Quantity of values. default to 1
+ * @property {boolean} uppercase flag to use uppercase letters
+ * @property {boolean} prefix flag to add 0x prefix
  */
 class Random {
     constructor(seed) {
@@ -346,7 +351,9 @@ class Random {
         const finalOptions = typeof options === 'number'
             ? Object.assign(Object.assign({}, defaultOptions), { count: options }) : Object.assign(Object.assign({}, defaultOptions), options);
         const { count, uppercase } = finalOptions;
-        const alphaNumericArray = uppercase ? uppercaseAlphaNumeric : lowercaseAlphaNumeric;
+        const alphaNumericArray = uppercase
+            ? uppercaseAlphaNumeric
+            : lowercaseAlphaNumeric;
         const alphaNumerics = Array.from(Array(count).keys()).map(() => this.arrayElement(alphaNumericArray));
         return alphaNumerics.join('');
     }
@@ -370,6 +377,80 @@ class Random {
         const finalArray = array || ['a', 'b', 'c'];
         const index = this.number({ max: finalArray.length - 1 });
         return finalArray[index];
+    }
+    /**
+     * Generate a random boolean
+     *
+     * @method random.boolean
+     * @since 1.2.0
+     * @returns {boolean} Returns the generated boolean.
+     * @example
+     * ```javascript
+     * random.boolean()
+     * // => true
+     *
+     * random.boolean()
+     * // => false
+     * ```
+     */
+    boolean() {
+        return Boolean(this.number(1));
+    }
+    /**
+     * Returns a single random floating-point number based on a max number or range
+     *
+     * @method random.float
+     * @param {number|NumberOptions} options
+     * @since 1.2.0
+     * @returns {number} Returns the generated float.
+     * @example
+     * ```javascript
+     * random.float(100)
+     * // => 10
+     *
+     * random.float({min:10, max:20, precision:1})
+     * // => 15
+     * ```
+     */
+    float(options = {}) {
+        const defaultOptions = {
+            precision: 0.01
+        };
+        const finalOptions = typeof options === 'number'
+            ? Object.assign(Object.assign({}, defaultOptions), { precision: options }) : Object.assign(Object.assign({}, defaultOptions), options);
+        return this.number(finalOptions);
+    }
+    /**
+     *
+     * Returns lower or upper hexadecimal number string based on count, uppercase and prefix options
+     *
+     * @method random.hexadecimal
+     * @since 1.7.0
+     * @param {number|HexadecimalOptions} options
+     * @returns {string} Returns the generated string with hexadecimal characters.
+     * @example
+     * ```javascript
+     * random.hexadecimal()
+     * // => '0xf'
+     *
+     * random.hexadecimal({count:2, uppercase:true, prefix: false})
+     * // => '1A'
+     * ```
+     */
+    hexadecimal(options = {}) {
+        const defaultOptions = {
+            count: 1,
+            uppercase: false,
+            prefix: true
+        };
+        const finalOptions = typeof options === 'number'
+            ? Object.assign(Object.assign({}, defaultOptions), { count: options }) : Object.assign(Object.assign({}, defaultOptions), options);
+        const { count, uppercase, prefix } = finalOptions;
+        const hexadecimalArray = uppercase
+            ? uppercaseHexadecimal
+            : lowercaseHexadecimal;
+        const hexadecimals = Array.from(Array(count).keys()).map(() => this.arrayElement(hexadecimalArray));
+        return prefix ? `${uppercase ? '0X' : '0x'}${hexadecimals.join('')}` : hexadecimals.join('');
     }
     /**
      * Returns a single random number based on a max number or range
@@ -401,48 +482,6 @@ class Random {
         const randomNumber = Math.floor(this.rand(finalMax / precision, min / precision));
         // Workaround problem in Float point arithmetics for e.g. 6681493 / 0.01
         return randomNumber / (1 / precision);
-    }
-    /**
-     * Returns a single random floating-point number based on a max number or range
-     *
-     * @method random.float
-     * @param {number|NumberOptions} options
-     * @since 1.2.0
-     * @returns {number} Returns the generated float.
-     * @example
-     * ```javascript
-     * random.float(100)
-     * // => 10
-     *
-     * random.float({min:10, max:20, precision:1})
-     * // => 15
-     * ```
-     */
-    float(options = {}) {
-        const defaultOptions = {
-            precision: 0.01
-        };
-        const finalOptions = typeof options === 'number'
-            ? Object.assign(Object.assign({}, defaultOptions), { precision: options }) : Object.assign(Object.assign({}, defaultOptions), options);
-        return this.number(finalOptions);
-    }
-    /**
-     * Generate a random boolean
-     *
-     * @method random.boolean
-     * @since 1.2.0
-     * @returns {boolean} Returns the generated boolean.
-     * @example
-     * ```javascript
-     * random.boolean()
-     * // => true
-     *
-     * random.boolean()
-     * // => false
-     * ```
-     */
-    boolean() {
-        return Boolean(this.number(1));
     }
     /**
      * Generate a uuid.
@@ -612,27 +651,6 @@ function Random (faker, seed) {
 /*  this.locale = function randomLocale () {
     return faker.random.arrayElement(Object.keys(faker.locales));
   };
-*/
-/**
- * hexaDecimal
- *
- * @method faker.random.hexaDecimal
- * @param {number} count defaults to 1
- */
-/*  this.hexaDecimal = function hexaDecimal(count) {
-    if (typeof count === "undefined") {
-      count = 1;
-    }
-
-    var wholeString = "";
-    for(var i = 0; i < count; i++) {
-      wholeString += faker.random.arrayElement(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f", "A", "B", "C", "D", "E", "F"]);
-    }
-
-    return "0x"+wholeString;
-  };
-
-  return this;
 */
 //}
 //module['exports'] = Random;
