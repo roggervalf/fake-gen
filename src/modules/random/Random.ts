@@ -1,7 +1,9 @@
 import { MersenneTwister } from '../../utils/mersenneTwister';
 import {
+  lowercaseAlphaNumeric,
   lowercaseLetters,
   RFC4122_TEMPLATE,
+  uppercaseAlphaNumeric,
   uppercaseLetters
 } from './constants';
 
@@ -81,6 +83,47 @@ export class Random {
   }
 
   /**
+   * Returns lower or upper alpha numeric characters based count and uppercase options
+   *
+   * @method random.alphaNumeric
+   * @since 1.6.0
+   * @param {number|AlphaOptions} options
+   * @returns {string} Returns the generated string with alpha numeric characters.
+   * @example
+   * ```javascript
+   * random.alphaNumeric()
+   * // => '5'
+   *
+   * random.alphaNumeric({count:2,uppercase:true})
+   * // => '1A'
+   * ```
+   */
+  alphaNumeric(
+    this: Random,
+    options: number | AlphaOptionsInterface = {}
+  ): string {
+    const defaultOptions = {
+      count: 1,
+      uppercase: false
+    };
+
+    const finalOptions =
+      typeof options === 'number'
+        ? { ...defaultOptions, count: options }
+        : { ...defaultOptions, ...options };
+    const { count, uppercase } = finalOptions;
+    const alphaNumericArray = uppercase
+      ? uppercaseAlphaNumeric
+      : lowercaseAlphaNumeric;
+
+    const alphaNumerics = Array.from(Array(count).keys()).map(() =>
+      this.arrayElement(alphaNumericArray)
+    );
+
+    return alphaNumerics.join('');
+  }
+
+  /**
    * Takes an array and returns a random element of the array
    *
    * @method random.arrayElement
@@ -96,7 +139,7 @@ export class Random {
    * // => 'a'
    * ```
    */
-  arrayElement<T>(array?: Array<T>): T | string {
+  arrayElement<T>(this: Random, array?: Array<T>): T | string {
     const finalArray = array || ['a', 'b', 'c'];
     const index = this.number({ max: finalArray.length - 1 });
 
@@ -119,7 +162,7 @@ export class Random {
    * // => 15
    * ```
    */
-  number(options: number | NumberOptionsInterface = {}): number {
+  number(this: Random, options: number | NumberOptionsInterface = {}): number {
     const defaultOptions = {
       min: 0,
       max: 99999,
@@ -157,7 +200,7 @@ export class Random {
    * // => 15
    * ```
    */
-  float(options: number | NumberOptionsInterface = {}): number {
+  float(this: Random, options: number | NumberOptionsInterface = {}): number {
     const defaultOptions = {
       precision: 0.01
     };
@@ -363,25 +406,6 @@ function Random (faker, seed) {
  */
 /*  this.locale = function randomLocale () {
     return faker.random.arrayElement(Object.keys(faker.locales));
-  };
-*/
-/**
- * alphaNumeric
- *
- * @method faker.random.alphaNumeric
- * @param {number} count defaults to 1
- */
-/*  this.alphaNumeric = function alphaNumeric(count) {
-    if (typeof count === "undefined") {
-      count = 1;
-    }
-
-    var wholeString = "";
-    for(var i = 0; i < count; i++) {
-      wholeString += faker.random.arrayElement(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]);
-    }
-
-    return wholeString;
   };
 */
 /**

@@ -56,6 +56,18 @@ const uppercaseLetters = [
   'Z'
 ];
 
+const numberStrings = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+const lowercaseAlphaNumeric = [...numberStrings, ...lowercaseLetters];
+
+const uppercaseAlphaNumeric = [...numberStrings, ...uppercaseLetters];
+
 const RFC4122_TEMPLATE = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
 
-export { lowercaseLetters, RFC4122_TEMPLATE, uppercaseLetters };
+export {
+  lowercaseAlphaNumeric,
+  lowercaseLetters,
+  RFC4122_TEMPLATE,
+  uppercaseAlphaNumeric,
+  uppercaseLetters
+};

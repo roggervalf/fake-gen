@@ -95,6 +95,23 @@ declare class Random {
      */
     alpha(options?: number | AlphaOptionsInterface): string;
     /**
+     * Returns lower or upper alpha numeric characters based count and uppercase options
+     *
+     * @method random.alphaNumeric
+     * @since 1.6.0
+     * @param {number|AlphaOptions} options
+     * @returns {string} Returns the generated string with alpha numeric characters.
+     * @example
+     * ```javascript
+     * random.alphaNumeric()
+     * // => '5'
+     *
+     * random.alphaNumeric({count:2,uppercase:true})
+     * // => '1A'
+     * ```
+     */
+    alphaNumeric(this: Random, options?: number | AlphaOptionsInterface): string;
+    /**
      * Takes an array and returns a random element of the array
      *
      * @method random.arrayElement
@@ -110,7 +127,7 @@ declare class Random {
      * // => 'a'
      * ```
      */
-    arrayElement<T>(array?: Array<T>): T | string;
+    arrayElement<T>(this: Random, array?: Array<T>): T | string;
     /**
      * Returns a single random number based on a max number or range
      *
@@ -127,7 +144,7 @@ declare class Random {
      * // => 15
      * ```
      */
-    number(options?: number | NumberOptionsInterface): number;
+    number(this: Random, options?: number | NumberOptionsInterface): number;
     /**
      * Returns a single random floating-point number based on a max number or range
      *
@@ -144,7 +161,7 @@ declare class Random {
      * // => 15
      * ```
      */
-    float(options?: number | NumberOptionsInterface): number;
+    float(this: Random, options?: number | NumberOptionsInterface): number;
     /**
      * Generate a random boolean
      *
@@ -212,12 +229,6 @@ declare class Random {
  * locale
  *
  * @method faker.random.locale
- */
-/**
- * alphaNumeric
- *
- * @method faker.random.alphaNumeric
- * @param {number} count defaults to 1
  */
 /**
  * hexaDecimal

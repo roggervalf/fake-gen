@@ -51,6 +51,46 @@ describe('Random', () => {
     });
   });
 
+  describe('alphaNumeric', () => {
+    it('returns single lowercase alpha numeric character when no options are provided', () => {
+      const random = new Random();
+      const alphaNumeric = random.alphaNumeric();
+
+      expect(alphaNumeric.length).toBe(1);
+      expect(alphaNumeric).toMatch(/([a-z0-9])/);
+    });
+
+    it('returns single uppercase alpha numeric character when uppercase option is true', () => {
+      const random = new Random();
+      const alphaNumeric = random.alphaNumeric({ uppercase: true });
+
+      expect(alphaNumeric.length).toBe(1);
+      expect(alphaNumeric).toMatch(/[A-Z0-9]/);
+    });
+
+    describe('when count options is provided', () => {
+      describe('when count is passed as number', () => {
+        it('generates many random letters', () => {
+          const random = new Random();
+          const alphaNumerics = random.alphaNumeric(5);
+
+          expect(alphaNumerics.length).toBe(5);
+          expect(alphaNumerics).toMatch(/[a-z0-9]{5}/);
+        });
+      });
+
+      describe('when count is passed as part of options object', () => {
+        it('generates many random letters', () => {
+          const random = new Random();
+          const alphaNumerics = random.alphaNumeric({ count: 5 });
+
+          expect(alphaNumerics.length).toBe(5);
+          expect(alphaNumerics).toMatch(/[a-z0-9]{5}/);
+        });
+      });
+    });
+  });
+
   describe('arrayElement', () => {
     it('returns a random element in the default array', () => {
       const random = new Random();
