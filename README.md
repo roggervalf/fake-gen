@@ -54,6 +54,21 @@ const random = new Random();
 console.log(random.alpha());
 // expects a random character from 'a' to 'z'
 
+console.log(random.alphaNumeric());
+// expects a random character from 'a' to 'z' or '0' to '9'
+
+console.log(random.arrayElement([1, 2, 3]));
+// expects a random element from the provided array, i.e: 2
+
+console.log(random.boolean());
+// expects a random boolean, i.e: false
+
+console.log(random.float());
+// expects a random float number, i.e: 43173.42
+
+console.log(random.hexadecimal());
+// expects a random hexadecimal expression, i.e: 0xF
+
 console.log(random.number(100));
 // expects a random number from 0 to 100
 
@@ -84,9 +99,11 @@ console.log(internet.protocol());
   - protocol
 - random
   - alpha
+  - alphaNumeric
   - arrayElement
   - boolean
   - float
+  - hexadecimal
   - number
   - uuid
 
