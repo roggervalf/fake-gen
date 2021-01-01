@@ -58,9 +58,9 @@ interface AlphaOptionsInterface {
     count?: number;
     uppercase?: boolean;
 }
-declare type HexadecimalOptionsType = AlphaOptionsInterface & ({
+declare type HexadecimalOptionsType = AlphaOptionsInterface & {
     prefix?: boolean;
-});
+};
 /**
  * Object with options
  *
@@ -177,7 +177,7 @@ declare class Random {
      * Returns lower or upper hexadecimal number string based on count, uppercase and prefix options
      *
      * @method random.hexadecimal
-     * @since 1.7.0
+     * @since 1.6.0
      * @param {number|HexadecimalOptions} options
      * @returns {string} Returns the generated string with hexadecimal characters.
      * @example
@@ -252,12 +252,21 @@ declare class Random {
 /**
  * locale
  *
- * @method faker.random.image
- */
-/**
- * locale
- *
  * @method faker.random.locale
  */
 
-export { Internet, Random };
+declare class Unique<T, V> {
+    private foundItems;
+    private maxRetries;
+    private maxTime;
+    private startTime;
+    private currentIterations;
+    constructor(maxRetries?: number, maxTime?: number);
+    execute(scope: string, method: (...args: unknown[]) => T, args: unknown[], model?: V): T;
+    clear(scope?: string): void;
+    errorMessage(message: string): Error;
+    isValuePresent(value: T, scope: string): boolean;
+    getUniqueValue(scope: string, method: (...args: unknown[]) => T, args: unknown[], model?: V): T;
+}
+
+export { Internet, Random, Unique };

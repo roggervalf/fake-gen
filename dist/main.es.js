@@ -200,14 +200,7 @@ class MersenneTwister {
 }
 /* These real versions are due to Isaku Wada, 2002/01/09 added */
 
-const lowercaseHexadecimalLetters = [
-    'a',
-    'b',
-    'c',
-    'd',
-    'e',
-    'f'
-];
+const lowercaseHexadecimalLetters = ['a', 'b', 'c', 'd', 'e', 'f'];
 const lowercaseLetters = [
     ...lowercaseHexadecimalLetters,
     'g',
@@ -231,14 +224,7 @@ const lowercaseLetters = [
     'y',
     'z'
 ];
-const uppercaseHexadecimalLetters = [
-    'A',
-    'B',
-    'C',
-    'D',
-    'E',
-    'F'
-];
+const uppercaseHexadecimalLetters = ['A', 'B', 'C', 'D', 'E', 'F'];
 const uppercaseLetters = [
     ...uppercaseHexadecimalLetters,
     'G',
@@ -425,7 +411,7 @@ class Random {
      * Returns lower or upper hexadecimal number string based on count, uppercase and prefix options
      *
      * @method random.hexadecimal
-     * @since 1.7.0
+     * @since 1.6.0
      * @param {number|HexadecimalOptions} options
      * @returns {string} Returns the generated string with hexadecimal characters.
      * @example
@@ -450,7 +436,9 @@ class Random {
             ? uppercaseHexadecimal
             : lowercaseHexadecimal;
         const hexadecimals = Array.from(Array(count).keys()).map(() => this.arrayElement(hexadecimalArray));
-        return prefix ? `${uppercase ? '0X' : '0x'}${hexadecimals.join('')}` : hexadecimals.join('');
+        return prefix
+            ? `${uppercase ? '0X' : '0x'}${hexadecimals.join('')}`
+            : hexadecimals.join('');
     }
     /**
      * Returns a single random number based on a max number or range
@@ -632,15 +620,6 @@ function Random (faker, seed) {
       words.push(faker.random.word());
     }
     return words.join(' ');
-  }
-*/
-/**
- * locale
- *
- * @method faker.random.image
- */
-/*  this.image = function randomImage () {
-    return faker.image.image();
   }
 */
 /**
@@ -920,5 +899,59 @@ class Internet {
     }
 }
 
-export { Internet, Random };
+class Unique {
+    constructor(maxRetries = 20, maxTime = 10) {
+        this.foundItems = {};
+        this.maxTime = maxTime;
+        this.maxRetries = maxRetries;
+        this.startTime = 0;
+        this.currentIterations = 0;
+    }
+    execute(scope, method, args, model) {
+        this.startTime = new Date().getTime();
+        this.currentIterations = 0;
+        return this.getUniqueValue(scope, method, args, model);
+    }
+    clear(scope) {
+        if (!scope) {
+            this.foundItems = {};
+        }
+        else if (this.foundItems[scope] !== undefined) {
+            this.foundItems[scope].clear();
+        }
+    }
+    errorMessage(message) {
+        throw new Error(`${message}\nMay not be able to generate any more unique values with current settings.
+      \nTry adjusting maxTime or maxRetries parameters.`);
+    }
+    isValuePresent(value, scope) {
+        const scopedValues = this.foundItems[scope];
+        if (scopedValues === undefined) {
+            this.foundItems[scope] = new Set();
+            return false;
+        }
+        return this.foundItems[scope].has(value);
+    }
+    getUniqueValue(scope, method, args, model) {
+        const now = new Date().getTime();
+        if (now - this.startTime >= this.maxTime) {
+            this.errorMessage(`Exceeded maxTime: ${this.maxTime}`);
+        }
+        if (this.currentIterations >= this.maxRetries) {
+            this.errorMessage(`Exceeded maxRetries: ${this.maxRetries}`);
+        }
+        const value = method.apply(model || this, args);
+        if (this.isValuePresent(value, scope) === false) {
+            this.foundItems[scope].add(value);
+            this.currentIterations = 0;
+            return value;
+        }
+        else {
+            this.currentIterations = this.currentIterations + 1;
+            return this.getUniqueValue(scope, method, args, model);
+        }
+    }
+}
+
+export { Internet, Random, Unique };
 //# sourceMappingURL=main.es.js.map

@@ -212,7 +212,7 @@ export class Random {
    * Returns lower or upper hexadecimal number string based on count, uppercase and prefix options
    *
    * @method random.hexadecimal
-   * @since 1.7.0
+   * @since 1.6.0
    * @param {number|HexadecimalOptions} options
    * @returns {string} Returns the generated string with hexadecimal characters.
    * @example
@@ -446,15 +446,6 @@ function Random (faker, seed) {
       words.push(faker.random.word());
     }
     return words.join(' ');
-  }
-*/
-/**
- * locale
- *
- * @method faker.random.image
- */
-/*  this.image = function randomImage () {
-    return faker.image.image();
   }
 */
 /**
