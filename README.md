@@ -24,7 +24,8 @@ yarn add fake-gen
 // @deno-types="https://raw.githubusercontent.com/roggervalf/fake_gen/master/dist/main.d.ts"
 import {
   Internet,
-  Random
+  Random,
+  Unique
 } from 'https://raw.githubusercontent.com/roggervalf/fake_gen/master/dist/main.es.js';
 ```
 
@@ -34,20 +35,21 @@ or
 // @deno-types="https://deno.land/x/fake_gen@master/dist/main.d.ts"
 import {
   Internet,
-  Random
+  Random,
+  Unique
 } from 'https://deno.land/x/fake_gen@master/dist/main.es.js';
 ```
 
 ## Node import
 
 ```js
-import { Internet, Random } from 'fake-gen';
+import { Internet, Random, Unique } from 'fake-gen';
 ```
 
 **Example:**
 
 ```js
-const { Internet, Random } = require('fake-gen');
+const { Internet, Random, Unique } = require('fake-gen');
 
 const random = new Random();
 
@@ -89,6 +91,18 @@ console.log(internet.ip());
 
 console.log(internet.protocol());
 // expects a random ip, i.e: https
+
+const unique = new Unique();
+
+console.log(
+  unique.execute({
+    scope: 'scope',
+    method: random.arrayElement,
+    args: [[1, 2, 3]],
+    model: random
+  })
+);
+// expects a random unique value from arrayElement function, scoped by 'scope' string, i.e: 1
 ```
 
 ## Methods

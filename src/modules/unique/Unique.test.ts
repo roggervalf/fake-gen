@@ -295,13 +295,12 @@ describe('Unique', () => {
       function identity(): number {
         return 1;
       }
-      const unique = new Unique<number, typeof identity>(200, 1);
+      const unique = new Unique<number, typeof identity>(200, 0);
       const expectedError = new Error(
-        'Exceeded maxTime: 1' +
+        'Exceeded maxTime: 0' +
           '\nMay not be able to generate any more unique values with current settings.' +
           '\nTry adjusting maxTime or maxRetries parameters.'
       );
-      unique.execute({ scope: 'scope-h', method: identity });
 
       expect(() => {
         unique.execute({ scope: 'scope-h', method: identity });
