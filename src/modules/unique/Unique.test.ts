@@ -2,19 +2,333 @@ import { Unique } from './Unique';
 import { Random } from '../random/Random';
 
 describe('Unique', () => {
+  describe('when creating a Unique instance', () => {
+    it("doesn't throw an error", () => {
+      expect(() => new Unique()).not.toThrow();
+    });
+
+    it('returns a Unique instance', () => {
+      expect(new Unique()).toBeInstanceOf(Unique);
+    });
+  });
+
   describe('when using execute method', () => {
-    it('returns unique values', async () => {
+    it('returns unique values', () => {
       const unique = new Unique<number | string, Random>();
       const random = new Random();
       const testArray = [1, 2, 3];
 
       expect(testArray).toEqual(
         expect.arrayContaining([
-          unique.execute('scope1', random.arrayElement, [testArray], random),
-          unique.execute('scope1', random.arrayElement, [testArray], random),
-          unique.execute('scope1', random.arrayElement, [testArray], random)
+          unique.execute({
+            scope: 'scope-a',
+            method: random.arrayElement,
+            args: [testArray],
+            model: random
+          }),
+          unique.execute({
+            scope: 'scope-a',
+            method: random.arrayElement,
+            args: [testArray],
+            model: random
+          }),
+          unique.execute({
+            scope: 'scope-a',
+            method: random.arrayElement,
+            args: [testArray],
+            model: random
+          })
         ])
       );
+    });
+
+    describe('when scope same function with different strings', () => {
+      it('returns unique values per scope', () => {
+        const unique = new Unique<number | string, Random>();
+        const random = new Random();
+        const testArray = [1, 2, 3];
+
+        expect(testArray).toEqual(
+          expect.arrayContaining([
+            unique.execute({
+              scope: 'scope-b',
+              method: random.arrayElement,
+              args: [testArray],
+              model: random
+            }),
+            unique.execute({
+              scope: 'scope-b',
+              method: random.arrayElement,
+              args: [testArray],
+              model: random
+            }),
+            unique.execute({
+              scope: 'scope-b',
+              method: random.arrayElement,
+              args: [testArray],
+              model: random
+            })
+          ])
+        );
+        expect(testArray).toEqual(
+          expect.arrayContaining([
+            unique.execute({
+              scope: 'scope-c',
+              method: random.arrayElement,
+              args: [testArray],
+              model: random
+            }),
+            unique.execute({
+              scope: 'scope-c',
+              method: random.arrayElement,
+              args: [testArray],
+              model: random
+            }),
+            unique.execute({
+              scope: 'scope-c',
+              method: random.arrayElement,
+              args: [testArray],
+              model: random
+            })
+          ])
+        );
+      });
+    });
+
+    describe('when get more values than expected', () => {
+      it('throws an error', () => {
+        const unique = new Unique<number | string, Random>();
+        const random = new Random();
+        const testArray = [1, 2, 3];
+        unique.execute({
+          scope: 'scope-d',
+          method: random.arrayElement,
+          args: [testArray],
+          model: random
+        });
+        unique.execute({
+          scope: 'scope-d',
+          method: random.arrayElement,
+          args: [testArray],
+          model: random
+        });
+        unique.execute({
+          scope: 'scope-d',
+          method: random.arrayElement,
+          args: [testArray],
+          model: random
+        });
+        const expectedError = new Error(
+          'Exceeded maxRetries: 20' +
+            '\nMay not be able to generate any more unique values with current settings.' +
+            '\nTry adjusting maxTime or maxRetries parameters.'
+        );
+
+        expect(() => {
+          unique.execute({
+            scope: 'scope-d',
+            method: random.arrayElement,
+            args: [testArray],
+            model: random
+          });
+        }).toThrow(expectedError);
+      });
+    });
+  });
+
+  describe('when using clear method', () => {
+    it('clears the dictionary for that scope', () => {
+      const unique = new Unique<number | string, Random>();
+      const random = new Random();
+      const testArray = [1, 2, 3];
+      const firstResult = [
+        unique.execute({
+          scope: 'scope-e',
+          method: random.arrayElement,
+          args: [testArray],
+          model: random
+        }),
+        unique.execute({
+          scope: 'scope-e',
+          method: random.arrayElement,
+          args: [testArray],
+          model: random
+        }),
+        unique.execute({
+          scope: 'scope-e',
+          method: random.arrayElement,
+          args: [testArray],
+          model: random
+        })
+      ];
+      unique.clear('scope-e');
+      const secondResult = [
+        unique.execute({
+          scope: 'scope-e',
+          method: random.arrayElement,
+          args: [testArray],
+          model: random
+        }),
+        unique.execute({
+          scope: 'scope-e',
+          method: random.arrayElement,
+          args: [testArray],
+          model: random
+        }),
+        unique.execute({
+          scope: 'scope-e',
+          method: random.arrayElement,
+          args: [testArray],
+          model: random
+        })
+      ];
+
+      expect(testArray).toEqual(expect.arrayContaining(firstResult));
+      expect(testArray).toEqual(expect.arrayContaining(secondResult));
+    });
+
+    describe('when scope is not provided', () => {
+      it('clears all the dictionaries', () => {
+        const unique = new Unique<number | string, Random>();
+        const random = new Random();
+        const testArray = [1, 2, 3];
+        const firstResult = [
+          unique.execute({
+            scope: 'scope-f',
+            method: random.arrayElement,
+            args: [testArray],
+            model: random
+          }),
+          unique.execute({
+            scope: 'scope-f',
+            method: random.arrayElement,
+            args: [testArray],
+            model: random
+          }),
+          unique.execute({
+            scope: 'scope-f',
+            method: random.arrayElement,
+            args: [testArray],
+            model: random
+          })
+        ];
+        const secondResult = [
+          unique.execute({
+            scope: 'scope-g',
+            method: random.arrayElement,
+            args: [testArray],
+            model: random
+          }),
+          unique.execute({
+            scope: 'scope-g',
+            method: random.arrayElement,
+            args: [testArray],
+            model: random
+          }),
+          unique.execute({
+            scope: 'scope-g',
+            method: random.arrayElement,
+            args: [testArray],
+            model: random
+          })
+        ];
+        unique.clear();
+        const thirdResult = [
+          unique.execute({
+            scope: 'scope-f',
+            method: random.arrayElement,
+            args: [testArray],
+            model: random
+          }),
+          unique.execute({
+            scope: 'scope-f',
+            method: random.arrayElement,
+            args: [testArray],
+            model: random
+          }),
+          unique.execute({
+            scope: 'scope-f',
+            method: random.arrayElement,
+            args: [testArray],
+            model: random
+          })
+        ];
+        const fourthResult = [
+          unique.execute({
+            scope: 'scope-g',
+            method: random.arrayElement,
+            args: [testArray],
+            model: random
+          }),
+          unique.execute({
+            scope: 'scope-g',
+            method: random.arrayElement,
+            args: [testArray],
+            model: random
+          }),
+          unique.execute({
+            scope: 'scope-g',
+            method: random.arrayElement,
+            args: [testArray],
+            model: random
+          })
+        ];
+
+        expect(testArray).toEqual(expect.arrayContaining(firstResult));
+        expect(testArray).toEqual(expect.arrayContaining(secondResult));
+        expect(testArray).toEqual(expect.arrayContaining(thirdResult));
+        expect(testArray).toEqual(expect.arrayContaining(fourthResult));
+      });
+    });
+
+    describe('when scope does not exist', () => {
+      it("doesn't throw an error", () => {
+        const unique = new Unique();
+
+        expect(() => unique.clear('scope-j')).not.toThrow();
+      });
+    });
+  });
+
+  describe('when exceeding maxTime', () => {
+    it('throws an error', () => {
+      function identity(): number {
+        return 1;
+      }
+      const unique = new Unique<number, typeof identity>(200, 1);
+      const expectedError = new Error(
+        'Exceeded maxTime: 1' +
+          '\nMay not be able to generate any more unique values with current settings.' +
+          '\nTry adjusting maxTime or maxRetries parameters.'
+      );
+      unique.execute({ scope: 'scope-h', method: identity });
+
+      expect(() => {
+        unique.execute({ scope: 'scope-h', method: identity });
+      }).toThrow(expectedError);
+    });
+  });
+
+  describe('when exceeding maxRetries', () => {
+    it('throws an error', () => {
+      function identity(value: number): number {
+        return value;
+      }
+      const unique = new Unique<number, typeof identity>(0);
+      const testArray = [1];
+      const expectedError = new Error(
+        'Exceeded maxRetries: 0' +
+          '\nMay not be able to generate any more unique values with current settings.' +
+          '\nTry adjusting maxTime or maxRetries parameters.'
+      );
+
+      expect(() => {
+        unique.execute({
+          scope: 'scope-i',
+          method: identity,
+          args: [testArray]
+        });
+      }).toThrow(expectedError);
     });
   });
 });

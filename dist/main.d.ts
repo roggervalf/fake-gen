@@ -255,6 +255,12 @@ declare class Random {
  * @method faker.random.locale
  */
 
+interface executeOptionsInterface<T, V> {
+    scope: string;
+    method: (...args: unknown[]) => T;
+    args?: unknown[];
+    model?: V;
+}
 declare class Unique<T, V> {
     private foundItems;
     private maxRetries;
@@ -262,11 +268,11 @@ declare class Unique<T, V> {
     private startTime;
     private currentIterations;
     constructor(maxRetries?: number, maxTime?: number);
-    execute(scope: string, method: (...args: unknown[]) => T, args: unknown[], model?: V): T;
-    clear(scope?: string): void;
-    errorMessage(message: string): Error;
-    isValuePresent(value: T, scope: string): boolean;
-    getUniqueValue(scope: string, method: (...args: unknown[]) => T, args: unknown[], model?: V): T;
+    execute(this: Unique<T, V>, { scope, method, args, model }: executeOptionsInterface<T, V>): T;
+    clear(this: Unique<T, V>, scope?: string): void;
+    private errorMessage;
+    private isValuePresent;
+    private getUniqueValue;
 }
 
 export { Internet, Random, Unique };

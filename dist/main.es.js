@@ -907,7 +907,7 @@ class Unique {
         this.startTime = 0;
         this.currentIterations = 0;
     }
-    execute(scope, method, args, model) {
+    execute({ scope, method, args, model }) {
         this.startTime = new Date().getTime();
         this.currentIterations = 0;
         return this.getUniqueValue(scope, method, args, model);
@@ -921,8 +921,8 @@ class Unique {
         }
     }
     errorMessage(message) {
-        throw new Error(`${message}\nMay not be able to generate any more unique values with current settings.
-      \nTry adjusting maxTime or maxRetries parameters.`);
+        throw new Error(`${message}\nMay not be able to generate any more unique values with current settings.` +
+            '\nTry adjusting maxTime or maxRetries parameters.');
     }
     isValuePresent(value, scope) {
         const scopedValues = this.foundItems[scope];
@@ -934,13 +934,14 @@ class Unique {
     }
     getUniqueValue(scope, method, args, model) {
         const now = new Date().getTime();
+        // console.log(now, this.startTime, this.maxTime);
         if (now - this.startTime >= this.maxTime) {
             this.errorMessage(`Exceeded maxTime: ${this.maxTime}`);
         }
         if (this.currentIterations >= this.maxRetries) {
             this.errorMessage(`Exceeded maxRetries: ${this.maxRetries}`);
         }
-        const value = method.apply(model || this, args);
+        const value = method.apply(model || this, args || []);
         if (this.isValuePresent(value, scope) === false) {
             this.foundItems[scope].add(value);
             this.currentIterations = 0;

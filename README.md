@@ -106,6 +106,9 @@ console.log(internet.protocol());
   - hexadecimal
   - number
   - uuid
+- unique
+  - clear
+  - execute
 
 ## Article
 
