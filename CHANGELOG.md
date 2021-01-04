@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/roggervalf/fake-gen/compare/v1.6.0...v1.7.0) (2021-01-04)
+
+
+### Features
+
+* **unique:** new module to handle unique values by calling functions ([d7afdc1](https://github.com/roggervalf/fake-gen/commit/d7afdc10e84f6f57e685e2c3bbf9615e0a81d6f3))
+
 # [1.6.0](https://github.com/roggervalf/fake-gen/compare/v1.5.0...v1.6.0) (2020-12-30)
 
 
