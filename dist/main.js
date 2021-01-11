@@ -204,6 +204,30 @@ class MersenneTwister {
 }
 /* These real versions are due to Isaku Wada, 2002/01/09 added */
 
+const bannedVehicleVinLetters = ['O', 'I', 'Q'];
+const numberStrings = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+const uppercaseHexadecimalLetters = ['A', 'B', 'C', 'D', 'E', 'F'];
+const vehicleVinLetters = [
+    ...uppercaseHexadecimalLetters,
+    'G',
+    'H',
+    'J',
+    'K',
+    'L',
+    'M',
+    'N',
+    'P',
+    'R',
+    'S',
+    'T',
+    'U',
+    'V',
+    'W',
+    'X',
+    'Y',
+    'Z'
+];
+
 const lowercaseHexadecimalLetters = ['a', 'b', 'c', 'd', 'e', 'f'];
 const lowercaseLetters = [
     ...lowercaseHexadecimalLetters,
@@ -228,31 +252,10 @@ const lowercaseLetters = [
     'y',
     'z'
 ];
-const uppercaseHexadecimalLetters = ['A', 'B', 'C', 'D', 'E', 'F'];
 const uppercaseLetters = [
-    ...uppercaseHexadecimalLetters,
-    'G',
-    'H',
-    'I',
-    'J',
-    'K',
-    'L',
-    'M',
-    'N',
-    'O',
-    'P',
-    'Q',
-    'R',
-    'S',
-    'T',
-    'U',
-    'V',
-    'W',
-    'X',
-    'Y',
-    'Z'
+    ...bannedVehicleVinLetters,
+    ...vehicleVinLetters
 ];
-const numberStrings = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 const lowercaseAlphaNumeric = [...numberStrings, ...lowercaseLetters];
 const lowercaseHexadecimal = [...numberStrings, ...lowercaseHexadecimalLetters];
 const uppercaseAlphaNumeric = [...numberStrings, ...uppercaseLetters];
@@ -904,10 +907,12 @@ class Internet {
 }
 
 class Unique {
-    constructor(maxRetries = 20, maxTime = 10) {
+    constructor(options = {}) {
+        const defaultOptions = { maxRetries: 20, maxTime: 10 };
+        const finalOptions = Object.assign(Object.assign({}, defaultOptions), options);
         this.foundItems = {};
-        this.maxTime = maxTime;
-        this.maxRetries = maxRetries;
+        this.maxTime = finalOptions.maxTime;
+        this.maxRetries = finalOptions.maxRetries;
         this.startTime = 0;
         this.currentIterations = 0;
     }
@@ -938,7 +943,6 @@ class Unique {
     }
     getUniqueValue(scope, method, args, model) {
         const now = new Date().getTime();
-        // console.log(now, this.startTime, this.maxTime);
         if (now - this.startTime >= this.maxTime) {
             this.errorMessage(`Exceeded maxTime: ${this.maxTime}`);
         }

@@ -5,6 +5,11 @@ interface executeOptionsInterface<T, V> {
   model?: V;
 }
 
+interface uniqueOptionsInterface {
+  maxRetries?: number;
+  maxTime?: number;
+}
+
 export class Unique<T, V> {
   private foundItems: Record<string, Set<T>>;
   private maxRetries: number;
@@ -12,10 +17,13 @@ export class Unique<T, V> {
   private startTime: number;
   private currentIterations: number;
 
-  constructor(maxRetries = 20, maxTime = 10) {
+  constructor(options: uniqueOptionsInterface = {}) {
+    const defaultOptions = { maxRetries: 20, maxTime: 10 };
+    const finalOptions = { ...defaultOptions, ...options };
+
     this.foundItems = {} as Record<string, Set<T>>;
-    this.maxTime = maxTime;
-    this.maxRetries = maxRetries;
+    this.maxTime = finalOptions.maxTime;
+    this.maxRetries = finalOptions.maxRetries;
     this.startTime = 0;
     this.currentIterations = 0;
   }
@@ -61,7 +69,6 @@ export class Unique<T, V> {
     model?: V
   ): T {
     const now = new Date().getTime();
-    // console.log(now, this.startTime, this.maxTime);
     if (now - this.startTime >= this.maxTime) {
       this.errorMessage(`Exceeded maxTime: ${this.maxTime}`);
     }

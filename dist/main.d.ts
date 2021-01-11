@@ -261,13 +261,17 @@ interface executeOptionsInterface<T, V> {
     args?: unknown[];
     model?: V;
 }
+interface uniqueOptionsInterface {
+    maxRetries?: number;
+    maxTime?: number;
+}
 declare class Unique<T, V> {
     private foundItems;
     private maxRetries;
     private maxTime;
     private startTime;
     private currentIterations;
-    constructor(maxRetries?: number, maxTime?: number);
+    constructor(options?: uniqueOptionsInterface);
     execute(this: Unique<T, V>, { scope, method, args, model }: executeOptionsInterface<T, V>): T;
     clear(this: Unique<T, V>, scope?: string): void;
     private errorMessage;

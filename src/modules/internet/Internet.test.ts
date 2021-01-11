@@ -20,7 +20,7 @@ describe('Internet', () => {
       expect(avatarUris).toEqual(expect.arrayContaining([avatarUri]));
     });
 
-    it('should return deterministic results when seeded with integer', () => {
+    it('returns deterministic results when seeded with integer', () => {
       const internet = new Internet(1);
       internet.initSeed(10);
 

@@ -1,4 +1,5 @@
 import { Unique } from './Unique';
+import { Internet } from '../internet/Internet';
 import { Random } from '../random/Random';
 
 describe('Unique', () => {
@@ -97,26 +98,17 @@ describe('Unique', () => {
 
     describe('when get more values than expected', () => {
       it('throws an error', () => {
-        const unique = new Unique<number | string, Random>();
-        const random = new Random();
-        const testArray = [1, 2, 3];
+        const unique = new Unique<number | string, Internet>();
+        const internet = new Internet();
         unique.execute({
           scope: 'scope-d',
-          method: random.arrayElement,
-          args: [testArray],
-          model: random
+          method: internet.protocol,
+          model: internet
         });
         unique.execute({
           scope: 'scope-d',
-          method: random.arrayElement,
-          args: [testArray],
-          model: random
-        });
-        unique.execute({
-          scope: 'scope-d',
-          method: random.arrayElement,
-          args: [testArray],
-          model: random
+          method: internet.protocol,
+          model: internet
         });
         const expectedError = new Error(
           'Exceeded maxRetries: 20' +
@@ -127,9 +119,8 @@ describe('Unique', () => {
         expect(() => {
           unique.execute({
             scope: 'scope-d',
-            method: random.arrayElement,
-            args: [testArray],
-            model: random
+            method: internet.protocol,
+            model: internet
           });
         }).toThrow(expectedError);
       });
@@ -295,7 +286,10 @@ describe('Unique', () => {
       function identity(): number {
         return 1;
       }
-      const unique = new Unique<number, typeof identity>(200, 0);
+      const unique = new Unique<number, typeof identity>({
+        maxRetries: 200,
+        maxTime: 0
+      });
       const expectedError = new Error(
         'Exceeded maxTime: 0' +
           '\nMay not be able to generate any more unique values with current settings.' +
@@ -313,13 +307,18 @@ describe('Unique', () => {
       function identity(value: number): number {
         return value;
       }
-      const unique = new Unique<number, typeof identity>(0);
+      const unique = new Unique<number, typeof identity>({ maxRetries: 1 });
       const testArray = [1];
       const expectedError = new Error(
-        'Exceeded maxRetries: 0' +
+        'Exceeded maxRetries: 1' +
           '\nMay not be able to generate any more unique values with current settings.' +
           '\nTry adjusting maxTime or maxRetries parameters.'
       );
+      unique.execute({
+        scope: 'scope-i',
+        method: identity,
+        args: [testArray]
+      });
 
       expect(() => {
         unique.execute({
