@@ -25,7 +25,8 @@ yarn add fake-gen
 import {
   Internet,
   Random,
-  Unique
+  Unique,
+  Vehicle
 } from 'https://raw.githubusercontent.com/roggervalf/fake_gen/master/dist/main.es.js';
 ```
 
@@ -36,20 +37,21 @@ or
 import {
   Internet,
   Random,
-  Unique
+  Unique,
+  Vehicle
 } from 'https://deno.land/x/fake_gen@master/dist/main.es.js';
 ```
 
 ## Node import
 
 ```js
-import { Internet, Random, Unique } from 'fake-gen';
+import { Internet, Random, Unique, Vehicle } from 'fake-gen';
 ```
 
 **Example:**
 
 ```js
-const { Internet, Random, Unique } = require('fake-gen');
+const { Internet, Random, Unique, Vehicle } = require('fake-gen');
 
 const random = new Random();
 
@@ -92,6 +94,14 @@ console.log(internet.ip());
 console.log(internet.protocol());
 // expects a random ip, i.e: https
 
+const vehicle = new Vehicle();
+
+console.log(vehicle.vin());
+// expects a random vehicle identification number, i.e: YV1MH682762184654
+
+console.log(vehicle.vrm());
+// expects a random vehicle registration mark, i.e: GL19AAQ
+
 const unique = new Unique();
 
 console.log(
@@ -123,6 +133,9 @@ console.log(
 - unique
   - clear
   - execute
+- vehicle
+  - vin
+  - vrm
 
 ## Article
 
