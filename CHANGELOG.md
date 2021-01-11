@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/roggervalf/fake-gen/compare/v1.7.0...v1.8.0) (2021-01-11)
+
+
+### Features
+
+* **vehicle:** adding new module with vin and vrm methods ([4d50540](https://github.com/roggervalf/fake-gen/commit/4d50540990f1923bac9e3047b7c01dde315ef3d0))
+
 # [1.7.0](https://github.com/roggervalf/fake-gen/compare/v1.6.0...v1.7.0) (2021-01-04)
 
 
