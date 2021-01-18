@@ -23,6 +23,7 @@ yarn add fake-gen
 ```ts
 // @deno-types="https://raw.githubusercontent.com/roggervalf/fake_gen/master/dist/main.d.ts"
 import {
+  DateTime,
   Internet,
   Random,
   Unique,
@@ -35,6 +36,7 @@ or
 ```ts
 // @deno-types="https://deno.land/x/fake_gen@master/dist/main.d.ts"
 import {
+  DateTime,
   Internet,
   Random,
   Unique,
@@ -45,13 +47,21 @@ import {
 ## Node import
 
 ```js
-import { Internet, Random, Unique, Vehicle } from 'fake-gen';
+import { DateTime, Internet, Random, Unique, Vehicle } from 'fake-gen';
 ```
 
 **Example:**
 
 ```js
-const { Internet, Random, Unique, Vehicle } = require('fake-gen');
+const { DateTime, Internet, Random, Unique, Vehicle } = require('fake-gen');
+
+const dateTime = new DateTime();
+
+console.log(dateTime.past());
+// expects a random date instance between 1 year in the past and now
+
+console.log(dateTime.future());
+// expects a random date instance between 1 year in the future and now
 
 const random = new Random();
 
@@ -117,6 +127,9 @@ console.log(
 
 ## Methods
 
+- dateTime
+  - future
+  - past
 - internet
   - avatar
   - ip
