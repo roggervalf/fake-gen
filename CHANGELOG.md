@@ -1,3 +1,10 @@
+# [1.9.0](https://github.com/roggervalf/fake-gen/compare/v1.8.0...v1.9.0) (2021-01-18)
+
+
+### Features
+
+* **datetime:** adding DateTime module ([30b49cf](https://github.com/roggervalf/fake-gen/commit/30b49cf78f3ccadd2ba971d06f67588cea6933c1))
+
 # [1.8.0](https://github.com/roggervalf/fake-gen/compare/v1.7.0...v1.8.0) (2021-01-11)
 
 
