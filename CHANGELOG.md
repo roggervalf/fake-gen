@@ -1,3 +1,10 @@
+# [1.10.0](https://github.com/roggervalf/fake-gen/compare/v1.9.0...v1.10.0) (2021-02-02)
+
+
+### Features
+
+* **internet:** adding ipv6 method to generate IPv6 addresses ([ab8c690](https://github.com/roggervalf/fake-gen/commit/ab8c6905a39c824645254bf5e249859026a778a9))
+
 # [1.9.0](https://github.com/roggervalf/fake-gen/compare/v1.8.0...v1.9.0) (2021-01-18)
 
 
