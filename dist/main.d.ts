@@ -69,10 +69,10 @@ declare class Internet {
      */
     avatar(): string;
     /**
-     * Generates a random ip
+     * Generates a random IP address
      * @method internet.ip
      * @since 1.4.0
-     * @returns {string} Returns a random ip.
+     * @returns {string} Returns a random IP address.
      * @example
      * ```javascript
      * internet.ip()
@@ -83,6 +83,21 @@ declare class Internet {
      * ```
      */
     ip(): string;
+    /**
+     * Generates a random IPv6 address
+     * @method internet.ipv6
+     * @since 1.10.0
+     * @returns {string} Returns a random IPv6 address.
+     * @example
+     * ```javascript
+     * internet.ipv6()
+     * // => '2001:0db8:6276:b1a7:5213:22f1:25df:c8a0',
+     *
+     * internet.ipv6()
+     * // => '9cda:87cd:9617:370e:8d56:d698:19c8:c195',
+     * ```
+     */
+    ipv6(): string;
     /**
      * Returns a random protocol
      * @method internet.protocol

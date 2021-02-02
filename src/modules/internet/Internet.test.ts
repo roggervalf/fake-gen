@@ -31,7 +31,7 @@ describe('Internet', () => {
   });
 
   describe('ip', () => {
-    it('returns a random ip', () => {
+    it('returns a random IP', () => {
       const internet = new Internet();
       const ip = internet.ip();
       const parts = ip.split('.');
@@ -41,6 +41,24 @@ describe('Internet', () => {
       expect(Number(parts[1])).toBeLessThanOrEqual(255);
       expect(Number(parts[2])).toBeLessThanOrEqual(255);
       expect(Number(parts[3])).toBeLessThanOrEqual(255);
+    });
+  });
+
+  describe('ipv6', () => {
+    it('returns a random IPv6', () => {
+      const internet = new Internet();
+      const ipv6 = internet.ipv6();
+      const parts = ipv6.split(':');
+
+      expect(parts.length).toBe(8);
+      expect(parseInt(parts[0], 16)).toBeLessThanOrEqual(65535);
+      expect(parseInt(parts[1], 16)).toBeLessThanOrEqual(65535);
+      expect(parseInt(parts[2], 16)).toBeLessThanOrEqual(65535);
+      expect(parseInt(parts[3], 16)).toBeLessThanOrEqual(65535);
+      expect(parseInt(parts[4], 16)).toBeLessThanOrEqual(65535);
+      expect(parseInt(parts[5], 16)).toBeLessThanOrEqual(65535);
+      expect(parseInt(parts[6], 16)).toBeLessThanOrEqual(65535);
+      expect(parseInt(parts[7], 16)).toBeLessThanOrEqual(65535);
     });
   });
 
