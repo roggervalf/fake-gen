@@ -99,7 +99,10 @@ console.log(internet.avatar());
 // expects a random avatar uri, i.e: https://randomuser.me/api/portraits/women/54.jpg
 
 console.log(internet.ip());
-// expects a random ip, i.e: 200.105.198.100
+// expects a random IP, i.e: 200.105.198.100
+
+console.log(internet.ipv6());
+// expects a random IPv6, i.e: 9cda:87cd:9617:370e:8d56:d698:19c8:c195
 
 console.log(internet.protocol());
 // expects a random ip, i.e: https
@@ -133,6 +136,7 @@ console.log(
 - internet
   - avatar
   - ip
+  - ipv6
   - protocol
 - random
   - alpha
