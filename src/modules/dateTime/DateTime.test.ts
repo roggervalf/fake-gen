@@ -53,6 +53,25 @@ describe('DateTime', () => {
       expect(date.getTime()).toBeLessThan(dateReference.getTime());
       expect(date.getTime()).toBeGreaterThan(past.getTime());
     });
+
+    it('returns a date N days from the recent past', () => {
+      const dateTime = new DateTime();
+      const now = new Date();
+      const date = dateTime.past({ days: 30, years: 0 });
+
+      expect(date.getTime()).toBeLessThan(now.getTime());
+    });
+
+    it('returns a date N days from the recent past, starting from date given', () => {
+      const dateTime = new DateTime();
+      const dateReference = new Date(2120, 11, 9, 10, 0, 0, 0);
+      const past = new Date();
+      past.setTime(dateReference.getTime() - 30 * 24 * 3600 * 1000);
+      const date = dateTime.past({ days: 30, years: 0, dateReference });
+
+      expect(date.getTime()).toBeLessThan(dateReference.getTime());
+      expect(date.getTime()).toBeGreaterThan(past.getTime());
+    });
   });
 
   describe('future()', () => {
@@ -93,6 +112,25 @@ describe('DateTime', () => {
       const future = new Date();
       future.setTime(dateReference.getTime() + 75 * 365 * 24 * 3600 * 1000);
       const date = dateTime.future({ years: 75, dateReference });
+
+      expect(date.getTime()).toBeGreaterThan(dateReference.getTime());
+      expect(date.getTime()).toBeLessThan(future.getTime());
+    });
+
+    it('returns a date N days into the future', () => {
+      const dateTime = new DateTime();
+      const now = new Date();
+      const date = dateTime.future({ days: 30, years: 0 });
+
+      expect(date.getTime()).toBeGreaterThan(now.getTime());
+    });
+
+    it('returns a date N days from the recent future, starting from date given', () => {
+      const dateTime = new DateTime();
+      const dateReference = new Date(1880, 11, 9, 10, 0, 0, 0);
+      const future = new Date();
+      future.setTime(dateReference.getTime() + 30 * 24 * 3600 * 1000);
+      const date = dateTime.future({ days: 30, years: 0, dateReference });
 
       expect(date.getTime()).toBeGreaterThan(dateReference.getTime());
       expect(date.getTime()).toBeLessThan(future.getTime());

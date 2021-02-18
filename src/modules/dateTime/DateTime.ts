@@ -1,6 +1,7 @@
 import { Random } from '../random/Random';
 
 interface DateTimeOptionsInterface {
+  days?: number;
   years?: number;
   dateReference?: Date | string;
 }
@@ -9,6 +10,7 @@ interface DateTimeOptionsInterface {
  * Object with options
  *
  * @typedef {Object} DateTimeOptions
+ * @property {number} days Number that represents days
  * @property {number} years Number that represents years
  * @property {Date} dateReference Value to take as reference
  */
@@ -36,13 +38,14 @@ export class DateTime {
    * dateTime.past()
    * // => '2020-03-21T01:57:41.025Z'
    *
-   * dateTime.past({years:2,dateReference:new Date('2021-01-20')})
+   * dateTime.past({days: 1, years:2, dateReference:new Date('2021-01-20')})
    * // => '2020-06-15T02:25:40.025Z'
    * ```
    */
   past(options: number | DateTimeOptionsInterface = {}): Date {
     const defaultOptions = {
       years: 1,
+      days: 0,
       dateReference: new Date()
     };
 
@@ -50,14 +53,14 @@ export class DateTime {
       typeof options === 'number'
         ? { ...defaultOptions, years: options }
         : { ...defaultOptions, ...options };
-    const { years, dateReference } = finalOptions;
+    const { days, years, dateReference } = finalOptions;
 
     const date = new Date(
       dateReference instanceof Date ? dateReference.getTime() : dateReference
     );
     const range = {
       min: 1000,
-      max: years * 365 * 24 * 3600 * 1000
+      max: years * 365 * 24 * 3600 * 1000 + days * 24 * 3600 * 1000
     };
 
     const past = date.getTime();
@@ -79,13 +82,14 @@ export class DateTime {
    * dateTime.future()
    * // => '2021-05-22T06:30:16.025Z'
    *
-   * dateTime.future({years:2,dateReference:new Date('2021-01-20')})
+   * dateTime.future({days: 1, years:2, dateReference:new Date('2021-01-20')})
    * // => '2021-08-04T08:10:33.025Z'
    * ```
    */
   future(options: number | DateTimeOptionsInterface = {}): Date {
     const defaultOptions = {
       years: 1,
+      days: 0,
       dateReference: new Date()
     };
 
@@ -93,14 +97,14 @@ export class DateTime {
       typeof options === 'number'
         ? { ...defaultOptions, years: options }
         : { ...defaultOptions, ...options };
-    const { years, dateReference } = finalOptions;
+    const { days, years, dateReference } = finalOptions;
 
     const date = new Date(
       dateReference instanceof Date ? dateReference.getTime() : dateReference
     );
     const range = {
       min: 1000,
-      max: years * 365 * 24 * 3600 * 1000
+      max: years * 365 * 24 * 3600 * 1000 + days * 24 * 3600 * 1000
     };
 
     const past = date.getTime();

@@ -638,6 +638,7 @@ function Random (faker, seed) {
  * Object with options
  *
  * @typedef {Object} DateTimeOptions
+ * @property {number} days Number that represents days
  * @property {number} years Number that represents years
  * @property {Date} dateReference Value to take as reference
  */
@@ -660,22 +661,23 @@ class DateTime {
      * dateTime.past()
      * // => '2020-03-21T01:57:41.025Z'
      *
-     * dateTime.past({years:2,dateReference:new Date('2021-01-20')})
+     * dateTime.past({days: 1, years:2, dateReference:new Date('2021-01-20')})
      * // => '2020-06-15T02:25:40.025Z'
      * ```
      */
     past(options = {}) {
         const defaultOptions = {
             years: 1,
+            days: 0,
             dateReference: new Date()
         };
         const finalOptions = typeof options === 'number'
             ? Object.assign(Object.assign({}, defaultOptions), { years: options }) : Object.assign(Object.assign({}, defaultOptions), options);
-        const { years, dateReference } = finalOptions;
+        const { days, years, dateReference } = finalOptions;
         const date = new Date(dateReference instanceof Date ? dateReference.getTime() : dateReference);
         const range = {
             min: 1000,
-            max: years * 365 * 24 * 3600 * 1000
+            max: years * 365 * 24 * 3600 * 1000 + days * 24 * 3600 * 1000
         };
         const past = date.getTime();
         // some time from now to N years ago, in milliseconds
@@ -694,22 +696,23 @@ class DateTime {
      * dateTime.future()
      * // => '2021-05-22T06:30:16.025Z'
      *
-     * dateTime.future({years:2,dateReference:new Date('2021-01-20')})
+     * dateTime.future({days: 1, years:2, dateReference:new Date('2021-01-20')})
      * // => '2021-08-04T08:10:33.025Z'
      * ```
      */
     future(options = {}) {
         const defaultOptions = {
             years: 1,
+            days: 0,
             dateReference: new Date()
         };
         const finalOptions = typeof options === 'number'
             ? Object.assign(Object.assign({}, defaultOptions), { years: options }) : Object.assign(Object.assign({}, defaultOptions), options);
-        const { years, dateReference } = finalOptions;
+        const { days, years, dateReference } = finalOptions;
         const date = new Date(dateReference instanceof Date ? dateReference.getTime() : dateReference);
         const range = {
             min: 1000,
-            max: years * 365 * 24 * 3600 * 1000
+            max: years * 365 * 24 * 3600 * 1000 + days * 24 * 3600 * 1000
         };
         const past = date.getTime();
         // some time from now to N years ago, in milliseconds
@@ -980,7 +983,7 @@ class Internet {
      */
     ipv6() {
         const result = Array.from(Array(8).keys()).map(() => this.random.hexadecimal({ count: 4, prefix: false }));
-        return result.join(":");
+        return result.join(':');
     }
     /**
      * Returns a random protocol
