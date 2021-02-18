@@ -1,3 +1,10 @@
+# [1.11.0](https://github.com/roggervalf/fake-gen/compare/v1.10.0...v1.11.0) (2021-02-18)
+
+
+### Features
+
+* **datetime:** extending past and future methods by adding days option ([175c830](https://github.com/roggervalf/fake-gen/commit/175c8309cbb14a2bd55035e7fac5626b2289f45a))
+
 # [1.10.0](https://github.com/roggervalf/fake-gen/compare/v1.9.0...v1.10.0) (2021-02-02)
 
 
